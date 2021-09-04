@@ -22,7 +22,8 @@ docker run \
 -e SERVER_BRANCH=master \
 --name nextcloud-test \
 -p 127.0.0.1:8443:443 \
-ghcr.io/szaimen/nextcloud-onedev:latest
+--user=www-data \
+ghcr.io/szaimen/nextcloud-test:latest
 ```
 
 <details>
@@ -33,7 +34,8 @@ docker run ^
 -e SERVER_BRANCH=master ^
 --name nextcloud-test ^
 -p 127.0.0.1:8443:443 ^
-ghcr.io/szaimen/nextcloud-onedev:latest
+--user=www-data ^
+ghcr.io/szaimen/nextcloud-test:latest
 ```
 
 </details>
@@ -56,7 +58,11 @@ Additionally, the container currently reacts on the following variables:
 ```
 CALENDAR_BRANCH
 CONTACTS_BRANCH
+FIRSTRUNWIZARD_BRANCH
+MAPS_BRANCH
+TALK_BRANCH
 TASKS_BRANCH
+TEXT_BRANCH
 VIEWER_BRANCH
 ```
 If one of the above variables are set via e.g. `-e CALENDAR_BRANCH=master` during the initial container creation, then will the container automatically get the chosen branch from github and compile and enable the chosen apps on the instance during the startup.

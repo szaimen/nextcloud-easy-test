@@ -10,19 +10,15 @@ cd /var/www/html
 git stash
 git pull
 if ! git checkout "$SERVER_BRANCH"; then
-    echo "Could not get the branch. Doesn't seem to exist."
+    echo "Could not get the '$SERVER_BRANCH' server branch. Doesn't seem to exist."
     exit 1
 fi
 git pull
 git submodule update --init
 
-# Correct rights
-chown www-data:www-data -R ./
-chmod 770 -R ./
-
 # Install Nextcloud
 if ! [ -f config/config.php ] \
-&& ! sudo -u www-data php -f occ \
+&& ! php -f occ \
         maintenance:install \
         --database=sqlite \
         --admin-user=admin \
@@ -33,7 +29,7 @@ fi
 
 # Set trusted domain if needed 
 if [ -n "$TRUSTED_DOMAIN" ]; then
-    if ! sudo -u www-data php -f occ config:system:set trusted_domains 1 --value="$TRUSTED_DOMAIN"; then
+    if ! php -f occ config:system:set trusted_domains 1 --value="$TRUSTED_DOMAIN"; then
         echo "Could not set the trusted domain '$TRUSTED_DOMAIN'"
         exit 1
     fi
@@ -46,7 +42,7 @@ APPID="$2"
 if [ -n "$BRANCH" ]; then
     cd /var/www/html/apps
     if [ -d ./"$APPID" ]; then
-        sudo -u www-data php -f ../occ app:disable "$APPID"
+        php -f ../occ app:disable "$APPID"
         rm -r ./"$APPID"
     fi
     if ! git clone https://github.com/nextcloud/"$APPID".git --branch "$BRANCH"; then
@@ -54,14 +50,19 @@ if [ -n "$BRANCH" ]; then
         exit 1
     fi
     cd ./"$APPID"
-    if ! make dev-setup || ! make build-js-production; then
-        echo "Could not compile the $APPID app."
-        exit 1
+    if [ "$APPID" = maps ]; then
+        if ! make build; then
+            echo "Could not compile the maps app."
+            exit 1
+        fi
+    else
+        if ! make dev-setup || ! make build-js-production; then
+            echo "Could not compile the $APPID app."
+            exit 1
+        fi
     fi
-    chown www-data:www-data -R ./
-    chmod 770 -R ./
     cd /var/www/html
-    if ! sudo -u www-data php -f occ app:enable "$APPID"; then
+    if ! php -f occ app:enable "$APPID"; then
         echo "Could not enable the $APPID app."
         exit 1
     fi
@@ -71,12 +72,16 @@ fi
 # Compatible apps
 install_enable_app "$CALENDAR_BRANCH" calendar
 install_enable_app "$CONTACTS_BRANCH" contacts
+install_enable_app "$FIRSTRUNWIZARD_BRANCH" firstrunwizard
+install_enable_app "$MAPS_BRANCH" maps
+install_enable_app "$TALK_BRANCH" spreed
 install_enable_app "$TASKS_BRANCH" tasks
+install_enable_app "$TEXT_BRANCH" text
 install_enable_app "$VIEWER_BRANCH" viewer
 
 # Clear cache
 cd /var/www/html
-if ! sudo -u www-data php -f occ maintenance:repair; then
+if ! php -f occ maintenance:repair; then
     echo "Could not clear the cache"
     exit 1
 fi

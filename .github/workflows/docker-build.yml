@@ -12,7 +12,7 @@ jobs:
   push_to_registry:
     runs-on: ubuntu-latest
 
-    name: Push Docker image nextcloud-onedev:${{ github.event.inputs.tagName }} to GitHub Packages
+    name: Push Docker image nextcloud-test:${{ github.event.inputs.tagName }} to GitHub Packages
 
     permissions:
       packages: write
@@ -43,4 +43,4 @@ jobs:
           context: './'
           file: 'Dockerfile'
           tags: |
-            ghcr.io/szaimen/nextcloud-onedev:${{ github.event.inputs.tagName }}
+            ghcr.io/szaimen/nextcloud-test:${{ github.event.inputs.tagName }}

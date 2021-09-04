@@ -2,7 +2,7 @@
 FROM ghcr.io/juliushaertl/nextcloud-dev-php74
 
 # Get current npm
-RUN curl -sL https://deb.nodesource.com/setup_15.x | sudo -E bash -
+RUN curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
 
 # Get other dependencies
 RUN apt-get update; \
@@ -18,9 +18,10 @@ RUN apt-get update; \
 RUN npm install -g npm
 
 # Generate self signed certificate
-RUN mkdir -p /etc/apache2/certs && \
-    cd /etc/apache2/certs && \
-    openssl req -new -newkey rsa:4096 -days 3650 -nodes -x509 -subj "/C=DE/ST=BE/L=Local/O=Dev/CN=localhost" -keyout ./ssl.key -out ./ssl.crt
+RUN mkdir -p /certs && \
+    cd /certs && \
+    openssl req -new -newkey rsa:4096 -days 3650 -nodes -x509 -subj "/C=DE/ST=BE/L=Local/O=Dev/CN=localhost" -keyout ./ssl.key -out ./ssl.crt && \
+    chmod -R +r ./
 
 # Remove default ports
 RUN rm /etc/apache2/ports.conf; \
@@ -52,6 +53,12 @@ RUN a2dissite 000-default && \
 # Copy start script
 COPY start.sh /usr/bin/
 RUN chmod +x /usr/bin/start.sh
+
+# Correctly set rights
+RUN chown www-data:www-data -R /var/www
+
+# Switch to www-data user to make container more secure
+USER www-data
 
 # Set entrypoint
 ENTRYPOINT  ["start.sh"]
