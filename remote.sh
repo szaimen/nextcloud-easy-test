@@ -46,7 +46,6 @@ install_enable_app() {
 # Variables
 local BRANCH="$1"
 local APPID="$2"
-local NODE_VERSION="$3"
 
 # Logic
 if [ -n "$BRANCH" ] && ! [ -f "/var/www/$APPID-completed" ]; then
@@ -70,13 +69,20 @@ if [ -n "$BRANCH" ] && ! [ -f "/var/www/$APPID-completed" ]; then
     cd ./"$APPID"
     
     # Handle node versions
-    if [ "$NODE_VERSION" = 14 ]; then
-        nvm use --lts
-    elif [ "$NODE_VERSION" = 16 ]; then
-        nvm use 16.8.0
+    set -x
+    local NODE_LINE=$(grep '"node":' package.json | head -1)
+    if [ -n "$NODE_LINE" ] && echo "$NODE_LINE" | grep -q '>='; then
+        local NODE_VERSION="$(echo "$NODE_LINE" | grep -oP '>=[0-9]+' | sed 's|>=||')"
+        if [ -n "$NODE_VERSION" ] && [ "$NODE_VERSION" -gt 14 ]; then
+            set +x
+            nvm use 16.8.0
+        else
+            set +x
+            nvm use --lts
+        fi
     else
-        echo "No valid Node version provided."
-        exit 1
+        set +x
+        nvm use --lts
     fi
 
     # Install apps
@@ -112,15 +118,15 @@ fi
 }
 
 # Compatible apps
-install_enable_app "$CALENDAR_BRANCH" calendar 14
+install_enable_app "$CALENDAR_BRANCH" calendar
 install_enable_app "$CONTACTS_BRANCH" contacts 14
-install_enable_app "$FIRSTRUNWIZARD_BRANCH" firstrunwizard 14
-install_enable_app "$LOGREADER_BRANCH" logreader 16
-install_enable_app "$MAPS_BRANCH" maps 14
-install_enable_app "$TALK_BRANCH" spreed 14
-install_enable_app "$TASKS_BRANCH" tasks 16
-install_enable_app "$TEXT_BRANCH" text 14
-install_enable_app "$VIEWER_BRANCH" viewer 14
+install_enable_app "$FIRSTRUNWIZARD_BRANCH" firstrunwizard
+install_enable_app "$LOGREADER_BRANCH" logreader
+install_enable_app "$MAPS_BRANCH" maps
+install_enable_app "$TALK_BRANCH" spreed
+install_enable_app "$TASKS_BRANCH" tasks
+install_enable_app "$TEXT_BRANCH" text
+install_enable_app "$VIEWER_BRANCH" viewer
 
 # Clear cache
 cd /var/www/html
