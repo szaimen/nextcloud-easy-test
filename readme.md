@@ -81,6 +81,7 @@ If you want to run this in a VM, you need to change the port in the initial comm
 ### Additionally Available Environmental Variables
 Additionally, the container currently reacts on the following variables:
 ```
+APPROVAL_BRANCH
 CALENDAR_BRANCH
 CONTACTS_BRANCH
 FIRSTRUNWIZARD_BRANCH
@@ -96,6 +97,7 @@ VIEWER_BRANCH
 <summary>For easy copy and paste</summary>
 
 ```
+-e APPROVAL_BRANCH=master \
 -e CALENDAR_BRANCH=master \
 -e CONTACTS_BRANCH=master \
 -e FIRSTRUNWIZARD_BRANCH=master \

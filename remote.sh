@@ -86,14 +86,14 @@ if [ -n "$BRANCH" ] && ! [ -f "/var/www/$APPID-completed" ]; then
     fi
 
     # Install apps
-    if [ "$APPID" = logreader ]; then
-        if ! make build/main.js; then
-            echo "Could not compile the logreader app."
+    if [ "$APPID" = approval ] || [ "$APPID" = maps ]; then
+        if ! make build; then
+            echo "Could not compile the $APPID app."
             exit 1
         fi
-    elif [ "$APPID" = maps ]; then
-        if ! make build; then
-            echo "Could not compile the maps app."
+    elif [ "$APPID" = logreader ]; then
+        if ! make build/main.js; then
+            echo "Could not compile the logreader app."
             exit 1
         fi
     else
@@ -118,8 +118,9 @@ fi
 }
 
 # Compatible apps
+install_enable_app "$APPROVAL_BRANCH" approval
 install_enable_app "$CALENDAR_BRANCH" calendar
-install_enable_app "$CONTACTS_BRANCH" contacts 14
+install_enable_app "$CONTACTS_BRANCH" contacts
 install_enable_app "$FIRSTRUNWIZARD_BRANCH" firstrunwizard
 install_enable_app "$LOGREADER_BRANCH" logreader
 install_enable_app "$MAPS_BRANCH" maps
