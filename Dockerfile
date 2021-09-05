@@ -1,21 +1,19 @@
 # From https://github.com/juliushaertl/nextcloud-docker-dev/blob/master/docker/Dockerfile.php74
 FROM ghcr.io/juliushaertl/nextcloud-dev-php74
 
-# Get current npm
-RUN curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
-
 # Get other dependencies
 RUN apt-get update; \
     apt-get install -y --no-install-recommends \
         openssl \
         nano \
         openssh-client \
-        nodejs \
     ; \
     rm -rf /var/lib/apt/lists/*
 
-# Update NPM
-RUN npm install -g npm
+# Install composer
+RUN curl -sS https://getcomposer.org/installer | php && \
+    mv composer.phar /usr/local/bin/composer && \
+    chmod +x /usr/local/bin/composer
 
 # Generate self signed certificate
 RUN mkdir -p /certs && \
@@ -59,6 +57,13 @@ RUN chown www-data:www-data -R /var/www
 
 # Switch to www-data user to make container more secure
 USER www-data
+
+# Install NVM (Fermium = v14)
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash \
+    && export NVM_DIR="/var/www/.nvm" \
+    && . "$NVM_DIR/nvm.sh" \
+    && nvm install 16.8.0 --latest-npm \
+    && nvm install --lts=FERMIUM --latest-npm
 
 # Set entrypoint
 ENTRYPOINT  ["start.sh"]

@@ -84,6 +84,7 @@ Additionally, the container currently reacts on the following variables:
 CALENDAR_BRANCH
 CONTACTS_BRANCH
 FIRSTRUNWIZARD_BRANCH
+LOGREADER_BRANCH
 MAPS_BRANCH
 TALK_BRANCH
 TASKS_BRANCH
@@ -98,6 +99,7 @@ VIEWER_BRANCH
 -e CALENDAR_BRANCH=master \
 -e CONTACTS_BRANCH=master \
 -e FIRSTRUNWIZARD_BRANCH=master \
+-e LOGREADER_BRANCH=master \
 -e MAPS_BRANCH=master \
 -e TALK_BRANCH=master \
 -e TASKS_BRANCH=master \
@@ -110,4 +112,4 @@ VIEWER_BRANCH
 If one of the above variables are set via e.g. `-e CALENDAR_BRANCH=master` during the initial container creation, then will the container automatically get the chosen branch from github and compile and enable the chosen apps on the instance during the startup.
 
 ## How does it work?
-The docker image comes pre-bundled with all needed dependencies for a minimal instance of Nextcloud, has the master branch already included and allows to define a target branch via environmental variables that will automatically be switched to and refreshed during the container startup (or restart).
+The docker image comes pre-bundled with all needed dependencies for a minimal instance of Nextcloud, has the master branch already included and allows to define a target branch via environmental variables that will automatically be switched to and installed during the container startup. For a refresh, you need to recreate the container by first removing it and then running the same command again.
