@@ -134,3 +134,16 @@ if ! php -f occ maintenance:repair; then
     echo "Could not clear the cache"
     exit 1
 fi
+
+# Function to show text in green
+print_green() {
+    local TEXT="$1"
+    printf "%b%s%b\n" "\e[0;92m" "$TEXT" "\e[0m"
+}
+
+# Show how to reach the server
+if [ -z "$TRUSTED_DOMAIN" ]; then
+    print_green "The server should now be reachable via https://localhost:8443/"
+else
+    print_green "The server should now be reachable via https://$TRUSTED_DOMAIN:8443/"
+fi
