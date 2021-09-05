@@ -90,6 +90,23 @@ TASKS_BRANCH
 TEXT_BRANCH
 VIEWER_BRANCH
 ```
+
+<details>
+<summary>For easy copy and paste</summary>
+
+```
+-e CALENDAR_BRANCH=master \
+-e CONTACTS_BRANCH=master \
+-e FIRSTRUNWIZARD_BRANCH=master \
+-e MAPS_BRANCH=master \
+-e TALK_BRANCH=master \
+-e TASKS_BRANCH=master \
+-e TEXT_BRANCH=master \
+-e VIEWER_BRANCH=master \
+```
+
+</details>
+
 If one of the above variables are set via e.g. `-e CALENDAR_BRANCH=master` during the initial container creation, then will the container automatically get the chosen branch from github and compile and enable the chosen apps on the instance during the startup.
 
 ## How does it work?
