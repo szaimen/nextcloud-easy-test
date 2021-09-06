@@ -11,13 +11,30 @@ export NVM_DIR="/var/www/.nvm"
 
 # Get latest changes
 if ! [ -f /var/www/server-completed ]; then
-    cd /var/www/html
-    git pull
-    if ! git checkout "$SERVER_BRANCH"; then
-        echo "Could not get the '$SERVER_BRANCH' server branch. Doesn't seem to exist."
-        exit 1
+    if ! echo "$SERVER_BRANCH" | grep -q ':'; then
+        cd /var/www/html
+        git pull
+        if ! git checkout "$SERVER_BRANCH"; then
+            echo "Could not get the '$SERVER_BRANCH' server branch. Doesn't seem to exist."
+            exit 1
+        fi
+        git pull
+    else
+        set -x
+        FORK_OWNER="${SERVER_BRANCH%%:*}"
+        FORK_BRANCH="${SERVER_BRANCH#*:}"
+        set +x
+        cd /var/www
+        rm -r html
+        mkdir html
+        cd html
+        if ! git clone https://github.com/"$FORK_OWNER"/server.git --branch "$FORK_BRANCH" --single-branch .; then
+            echo "Could not clone the requested server branch '$FORK_BRANCH' of '$FORK_OWNER'. Does it exist?"
+            exit 1
+        fi
     fi
-    git pull
+
+    # Initiate submodules
     git submodule update --init
 
     # Install Nextcloud
@@ -60,11 +77,22 @@ if [ -n "$BRANCH" ] && ! [ -f "/var/www/$APPID-completed" ]; then
     fi
 
     # Clone repo
-    if ! git clone https://github.com/nextcloud/"$APPID".git --branch "$BRANCH"; then
-        echo "Could not clone the requested branch '$BRANCH' of the $APPID app. Does it exist?"
-        exit 1
+    if ! echo "$BRANCH" | grep -q ':'; then
+        if ! git clone https://github.com/nextcloud/"$APPID".git --branch "$BRANCH" --single-branch; then
+            echo "Could not clone the requested branch '$BRANCH' of the $APPID app. Does it exist?"
+            exit 1
+        fi
+    else
+        set -x
+        local APP_OWNER="${BRANCH%%:*}"
+        local APP_BRANCH="${BRANCH#*:}"
+        set +x
+        if ! git clone https://github.com/"$APP_OWNER"/"$APPID".git --branch "$APP_BRANCH" --single-branch; then
+            echo "Could not clone the requested branch '$APP_BRANCH' of the $APPID app of '$APP_OWNER'. Does it exist?"
+            exit 1
+        fi
     fi
-    
+
     # Go into app directory
     cd ./"$APPID"
     
