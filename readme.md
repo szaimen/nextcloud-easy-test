@@ -20,10 +20,10 @@ On Linux and macOS:
 ```
 docker run \
 -e SERVER_BRANCH=master \
---name nextcloud-test \
+--name nextcloud-easy-test \
 -p 127.0.0.1:8443:443 \
 --user=www-data \
-ghcr.io/szaimen/nextcloud-test:latest
+ghcr.io/szaimen/nextcloud-easy-test:latest
 ```
 
 <details>
@@ -32,10 +32,10 @@ ghcr.io/szaimen/nextcloud-test:latest
 ```
 docker run ^
 -e SERVER_BRANCH=master ^
---name nextcloud-test ^
+--name nextcloud-easy-test ^
 -p 127.0.0.1:8443:443 ^
 --user=www-data ^
-ghcr.io/szaimen/nextcloud-test:latest
+ghcr.io/szaimen/nextcloud-easy-test:latest
 ```
 
 </details>
@@ -49,8 +49,8 @@ This command creates a new docker container.
 `-e SERVER_BRANCH=master \`  
 This inserts the environment variable `SERVER_BRANCH` into the container and sets it to the value `master`. 
 
-`--name nextcloud-test \`  
-This gives the container a distinct name `nextcloud-test` so that you are able to easily run other docker commands on the container.
+`--name nextcloud-easy-test \`  
+This gives the container a distinct name `nextcloud-easy-test` so that you are able to easily run other docker commands on the container.
 
 `-p 127.0.0.1:8443:443 \`  
 This makes the container listen on `localhost` and maps the host port `8443` to the container port `443` so that you are able to access the container by opening https://localhost:8443.
@@ -58,7 +58,7 @@ This makes the container listen on `localhost` and maps the host port `8443` to 
 `--user=www-data \`  
 This makes sure that every task inside the container runs with the `www-data` user which allows you to run the container securely on your PC. (The default is `root` which is insecure.)
 
-`ghcr.io/szaimen/nextcloud-test:latest`  
+`ghcr.io/szaimen/nextcloud-easy-test:latest`  
 This is the image name that you will use as base for the container. `latest` is the tag that will be used.
 
 ---
@@ -71,8 +71,8 @@ After the initial startup you will be able to access the instance via https://lo
 
 **After you are done testing**, you can simply stop the container by pressing `[CTRL] + [c]` and delete the container by running:
 ```
-docker stop nextcloud-test
-docker rm nextcloud-test
+docker stop nextcloud-easy-test
+docker rm nextcloud-easy-test
 ```
 
 ### Running in a VM
