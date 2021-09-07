@@ -125,11 +125,6 @@ if [ -n "$BRANCH" ] && ! [ -f "/var/www/$APPID-completed" ]; then
             echo "Could not compile the $APPID app."
             exit 1
         fi
-    elif [ "$APPID" = bookmarks ]; then
-        if ! make all; then
-            echo "Could not compile the bookmarks app."
-            exit 1
-        fi
     elif [ "$APPID" = circles ]; then
         if ! make composer; then
             echo "Could not initiate the circles app."
