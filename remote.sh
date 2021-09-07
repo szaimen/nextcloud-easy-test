@@ -193,7 +193,6 @@ install_enable_app "$CIRCLES_BRANCH" circles
 install_enable_app "$CONTACTS_BRANCH" contacts
 install_enable_app "$DECK_BRANCH" deck
 install_enable_app "$E2EE_BRANCH" end_to_end_encryption
-install_enable_app "$PDFVIEWER_BRANCH" files_pdfviewer
 install_enable_app "$FIRSTRUNWIZARD_BRANCH" firstrunwizard
 install_enable_app "$FORMS_BRANCH" forms
 install_enable_app "$GROUPFOLDERS_BRANCH" groupfolders
@@ -205,6 +204,7 @@ install_enable_app "$MAPS_BRANCH" maps
 install_enable_app "$NEWS_BRANCH" news
 install_enable_app "$NOTES_BRANCH" notes
 install_enable_app "$NOTIFICATIONS_BRANCH" notifications
+install_enable_app "$PDFVIEWER_BRANCH" files_pdfviewer
 install_enable_app "$PHOTOS_BRANCH" photos
 install_enable_app "$POLLS_BRANCH" polls
 install_enable_app "$TALK_BRANCH" spreed
