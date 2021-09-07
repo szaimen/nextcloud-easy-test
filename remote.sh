@@ -170,6 +170,7 @@ install_enable_app "$CALENDAR_BRANCH" calendar
 install_enable_app "$CONTACTS_BRANCH" contacts
 install_enable_app "$DECK_BRANCH" deck
 install_enable_app "$FIRSTRUNWIZARD_BRANCH" firstrunwizard
+install_enable_app "$GUESTS_BRANCH" guests
 install_enable_app "$LOGREADER_BRANCH" logreader
 install_enable_app "$MAIL_BRANCH" mail
 install_enable_app "$MAPS_BRANCH" maps
