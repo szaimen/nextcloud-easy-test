@@ -130,6 +130,11 @@ if [ -n "$BRANCH" ] && ! [ -f "/var/www/$APPID-completed" ]; then
             echo "Could not initiate the circles app."
             exit 1
         fi
+    elif [ "$APPID" = files_pdfviewer ]
+        if ! make install-composer-deps || ! make install-npm-deps-dev || ! build-js-production; then
+            echo "Could not compile the files_pdfviewer app."
+            exit 1
+        fi
     elif [ "$APPID" = forms ] || [ "$APPID" = mail ]; then
         if ! make install-composer-deps || ! make install-npm-deps || ! make build-js-production; then
             echo "Could not compile the $APPID app."
@@ -178,6 +183,7 @@ install_enable_app "$CALENDAR_BRANCH" calendar
 install_enable_app "$CIRCLES_BRANCH" circles
 install_enable_app "$CONTACTS_BRANCH" contacts
 install_enable_app "$DECK_BRANCH" deck
+install_enable_app "$FILES_PDFVIEWER_BRANCH" files_pdfviewer
 install_enable_app "$FIRSTRUNWIZARD_BRANCH" firstrunwizard
 install_enable_app "$FORMS_BRANCH" forms
 install_enable_app "$GROUPFOLDERS_BRANCH" groupfolders
