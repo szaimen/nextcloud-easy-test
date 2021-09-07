@@ -130,14 +130,14 @@ if [ -n "$BRANCH" ] && ! [ -f "/var/www/$APPID-completed" ]; then
             echo "Could not initiate the circles app."
             exit 1
         fi
+    elif [ "$APPID" = forms ] || [ "$APPID" = mail ]; then
+        if ! make install-composer-deps || ! make install-npm-deps || ! make build-js-production; then
+            echo "Could not compile the $APPID app."
+            exit 1
+        fi
     elif [ "$APPID" = logreader ]; then
         if ! make build/main.js; then
             echo "Could not compile the logreader app."
-            exit 1
-        fi
-    elif [ "$APPID" = mail ]; then
-        if ! make install-composer-deps || ! make install-npm-deps || ! make build-js-production; then
-            echo "Could not compile the mail app."
             exit 1
         fi
     elif [ "$APPID" = notes ]; then
@@ -179,6 +179,7 @@ install_enable_app "$CIRCLES_BRANCH" circles
 install_enable_app "$CONTACTS_BRANCH" contacts
 install_enable_app "$DECK_BRANCH" deck
 install_enable_app "$FIRSTRUNWIZARD_BRANCH" firstrunwizard
+install_enable_app "$FORMS_BRANCH" forms
 install_enable_app "$GUESTS_BRANCH" guests
 install_enable_app "$LOGREADER_BRANCH" logreader
 install_enable_app "$MAIL_BRANCH" mail
