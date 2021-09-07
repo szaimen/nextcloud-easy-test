@@ -194,7 +194,7 @@ install_enable_app "$GROUPFOLDERS_BRANCH" groupfolders
 install_enable_app "$GUESTS_BRANCH" guests
 install_enable_app "$IMPERSONATE_BRANCH" impersonate
 install_enable_app "$LOGREADER_BRANCH" logreader
-install_enable_app "$MAIL_BRANCH" mail
+# install_enable_app "$MAIL_BRANCH" mail
 install_enable_app "$MAPS_BRANCH" maps
 install_enable_app "$NEWS_BRANCH" news
 install_enable_app "$NOTES_BRANCH" notes
