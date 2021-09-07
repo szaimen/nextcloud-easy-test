@@ -138,14 +138,14 @@ if [ -n "$BRANCH" ] && ! [ -f "/var/www/$APPID-completed" ]; then
     elif [ "$APPID" = end_to_end_encryption ] || [ "$APPID" = impersonate ] || [ "$APPID" = serverinfo ]; then
         # No action needed
         sleep 1
-    elif [ "$APPID" = files_pdfviewer ]; then
-        if ! make install-composer-deps || ! make install-npm-deps-dev || ! build-js-production; then
-            echo "Could not compile the files_pdfviewer app."
+    elif [ "$APPID" = files_pdfviewer ] || [ "$APPID" = forms ]; then
+        if ! make install-composer-deps || ! make install-npm-deps-dev || ! make build-js-production; then
+            echo "Could not compile the $APPID app."
             exit 1
         fi
-    elif [ "$APPID" = forms ] || [ "$APPID" = mail ]; then
+    elif [ "$APPID" = mail ]; then
         if ! make install-composer-deps || ! make install-npm-deps || ! make build-js-production; then
-            echo "Could not compile the $APPID app."
+            echo "Could not compile the mail app."
             exit 1
         fi
     elif [ "$APPID" = groupfolders ] || [ "$APPID" = logreader ]; then
