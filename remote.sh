@@ -176,6 +176,7 @@ install_enable_app "$MAIL_BRANCH" mail
 install_enable_app "$MAPS_BRANCH" maps
 install_enable_app "$NEWS_BRANCH" news
 install_enable_app "$NOTES_BRANCH" notes
+install_enable_app "$PHOTOS_BRANCH" photos
 install_enable_app "$POLLS_BRANCH" polls
 install_enable_app "$TALK_BRANCH" spreed
 install_enable_app "$TASKS_BRANCH" tasks
