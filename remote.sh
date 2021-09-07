@@ -125,6 +125,11 @@ if [ -n "$BRANCH" ] && ! [ -f "/var/www/$APPID-completed" ]; then
             echo "Could not compile the $APPID app."
             exit 1
         fi
+    elif [ "$APPID" = bookmarks ]; then
+        if ! make all; then
+            echo "Could not compile the bookmarks app."
+            exit 1
+        fi
     elif [ "$APPID" = circles ]; then
         if ! make composer; then
             echo "Could not initiate the circles app."
@@ -179,6 +184,7 @@ fi
 # Compatible apps
 install_enable_app "$ACTIVITY_BRANCH" activity
 install_enable_app "$APPROVAL_BRANCH" approval
+install_enable_app "$BOOKMARKS_BRANCH" bookmarks
 install_enable_app "$CALENDAR_BRANCH" calendar
 install_enable_app "$CIRCLES_BRANCH" circles
 install_enable_app "$CONTACTS_BRANCH" contacts
