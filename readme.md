@@ -83,6 +83,7 @@ Additionally, the container currently reacts on the following variables:
 ```
 APPROVAL_BRANCH
 CALENDAR_BRANCH
+CIRCLES_BRANCH
 CONTACTS_BRANCH
 DECK_BRANCH
 FIRSTRUNWIZARD_BRANCH
@@ -106,6 +107,7 @@ VIEWER_BRANCH
 ```
 -e APPROVAL_BRANCH=master \
 -e CALENDAR_BRANCH=master \
+-e CIRCLES_BRANCH=master \
 -e CONTACTS_BRANCH=master \
 -e DECK_BRANCH=master \
 -e FIRSTRUNWIZARD_BRANCH=master \
