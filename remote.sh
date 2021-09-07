@@ -138,7 +138,7 @@ if [ -n "$BRANCH" ] && ! [ -f "/var/www/$APPID-completed" ]; then
     elif [ "$APPID" = end_to_end_encryption ] || [ "$APPID" = impersonate ] || [ "$APPID" = serverinfo ]; then
         # No action needed
         sleep 1
-    elif [ "$APPID" = files_pdfviewer ]
+    elif [ "$APPID" = files_pdfviewer ]; then
         if ! make install-composer-deps || ! make install-npm-deps-dev || ! build-js-production; then
             echo "Could not compile the files_pdfviewer app."
             exit 1
