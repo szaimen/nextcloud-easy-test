@@ -172,6 +172,7 @@ fi
 }
 
 # Compatible apps
+install_enable_app "$ACTIVITY_BRANCH" activity
 install_enable_app "$APPROVAL_BRANCH" approval
 install_enable_app "$CALENDAR_BRANCH" calendar
 install_enable_app "$CIRCLES_BRANCH" circles
