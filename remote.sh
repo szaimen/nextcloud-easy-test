@@ -193,7 +193,7 @@ install_enable_app "$CIRCLES_BRANCH" circles
 install_enable_app "$CONTACTS_BRANCH" contacts
 install_enable_app "$DECK_BRANCH" deck
 install_enable_app "$E2EE_BRANCH" end_to_end_encryption
-install_enable_app "$FILES_PDFVIEWER_BRANCH" files_pdfviewer
+install_enable_app "$PDFVIEWER_BRANCH" files_pdfviewer
 install_enable_app "$FIRSTRUNWIZARD_BRANCH" firstrunwizard
 install_enable_app "$FORMS_BRANCH" forms
 install_enable_app "$GROUPFOLDERS_BRANCH" groupfolders
