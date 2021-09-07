@@ -135,6 +135,9 @@ if [ -n "$BRANCH" ] && ! [ -f "/var/www/$APPID-completed" ]; then
             echo "Could not initiate the circles app."
             exit 1
         fi
+    elif [ "$APPID" = end_to_end_encryption ]; then
+        # No action needed
+        sleep 1
     elif [ "$APPID" = files_pdfviewer ]
         if ! make install-composer-deps || ! make install-npm-deps-dev || ! build-js-production; then
             echo "Could not compile the files_pdfviewer app."
@@ -189,6 +192,7 @@ install_enable_app "$CALENDAR_BRANCH" calendar
 install_enable_app "$CIRCLES_BRANCH" circles
 install_enable_app "$CONTACTS_BRANCH" contacts
 install_enable_app "$DECK_BRANCH" deck
+install_enable_app "$E2EE_BRANCH" end_to_end_encryption
 install_enable_app "$FILES_PDFVIEWER_BRANCH" files_pdfviewer
 install_enable_app "$FIRSTRUNWIZARD_BRANCH" firstrunwizard
 install_enable_app "$FORMS_BRANCH" forms
