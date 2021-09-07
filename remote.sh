@@ -135,9 +135,9 @@ if [ -n "$BRANCH" ] && ! [ -f "/var/www/$APPID-completed" ]; then
             echo "Could not compile the $APPID app."
             exit 1
         fi
-    elif [ "$APPID" = logreader ]; then
+    elif [ "$APPID" = groupfolders ] || [ "$APPID" = logreader ]; then
         if ! make build/main.js; then
-            echo "Could not compile the logreader app."
+            echo "Could not compile the $APPID app."
             exit 1
         fi
     elif [ "$APPID" = notes ]; then
@@ -180,6 +180,7 @@ install_enable_app "$CONTACTS_BRANCH" contacts
 install_enable_app "$DECK_BRANCH" deck
 install_enable_app "$FIRSTRUNWIZARD_BRANCH" firstrunwizard
 install_enable_app "$FORMS_BRANCH" forms
+install_enable_app "$GROUPFOLDERS_BRANCH" groupfolders
 install_enable_app "$GUESTS_BRANCH" guests
 install_enable_app "$LOGREADER_BRANCH" logreader
 install_enable_app "$MAIL_BRANCH" mail
