@@ -43,19 +43,19 @@ ghcr.io/szaimen/nextcloud-easy-test:latest
 <details>
 <summary>Explanation of the command</summary>
 
-`docker run \`  
+`docker run`  
 This command creates a new docker container.
 
-`-e SERVER_BRANCH=master \`  
+`-e SERVER_BRANCH=master`  
 This inserts the environment variable `SERVER_BRANCH` into the container and sets it to the value `master`. 
 
-`--name nextcloud-easy-test \`  
+`--name nextcloud-easy-test`  
 This gives the container a distinct name `nextcloud-easy-test` so that you are able to easily run other docker commands on the container.
 
-`-p 127.0.0.1:8443:443 \`  
+`-p 127.0.0.1:8443:443`  
 This makes the container listen on `localhost` and maps the host port `8443` to the container port `443` so that you are able to access the container by opening https://localhost:8443.
 
-`--user=www-data \`  
+`--user=www-data`  
 This makes sure that every task inside the container runs with the `www-data` user which allows you to run the container securely on your PC. (The default is `root` which is insecure.)
 
 `ghcr.io/szaimen/nextcloud-easy-test:latest`  
