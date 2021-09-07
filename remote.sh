@@ -98,7 +98,7 @@ if [ -n "$BRANCH" ] && ! [ -f "/var/www/$APPID-completed" ]; then
     
     # Handle node versions
     set -x
-    if [ -f packages.json ]; then
+    if [ -f package.json ]; then
         local NODE_LINE=$(grep '"node":' package.json | head -1)
     fi
     if [ -n "$NODE_LINE" ] && echo "$NODE_LINE" | grep -q '>='; then
