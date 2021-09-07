@@ -103,6 +103,10 @@ if [ -n "$BRANCH" ] && ! [ -f "/var/www/$APPID-completed" ]; then
         local NODE_VERSION="$(echo "$NODE_LINE" | grep -oP '>=[0-9]+' | sed 's|>=||')"
         if [ -n "$NODE_VERSION" ] && [ "$NODE_VERSION" -gt 14 ]; then
             set +x
+            if [ "$NODE_VERSION" -gt 16 ]; then
+                echo "The node version of $APPID is too new. Need to update the container."
+                exit 1
+            fi
             nvm use 16.8.0
         else
             set +x
