@@ -135,7 +135,7 @@ if [ -n "$BRANCH" ] && ! [ -f "/var/www/$APPID-completed" ]; then
             echo "Could not initiate the circles app."
             exit 1
         fi
-    elif [ "$APPID" = end_to_end_encryption ]; then
+    elif [ "$APPID" = end_to_end_encryption ] || [ "$APPID" = impersonate ]; then
         # No action needed
         sleep 1
     elif [ "$APPID" = files_pdfviewer ]
@@ -198,6 +198,7 @@ install_enable_app "$FIRSTRUNWIZARD_BRANCH" firstrunwizard
 install_enable_app "$FORMS_BRANCH" forms
 install_enable_app "$GROUPFOLDERS_BRANCH" groupfolders
 install_enable_app "$GUESTS_BRANCH" guests
+install_enable_app "$IMPERSONATE_BRANCH" impersonate
 install_enable_app "$LOGREADER_BRANCH" logreader
 install_enable_app "$MAIL_BRANCH" mail
 install_enable_app "$MAPS_BRANCH" maps
