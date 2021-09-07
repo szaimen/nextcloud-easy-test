@@ -118,7 +118,7 @@ if [ -n "$BRANCH" ] && ! [ -f "/var/www/$APPID-completed" ]; then
     fi
 
     # Install apps
-    if [ "$APPID" = approval ] || [ "$APPID" = maps ]; then
+    if [ "$APPID" = approval ] || [ "$APPID" = deck ] || [ "$APPID" = maps ]; then
         if ! make build; then
             echo "Could not compile the $APPID app."
             exit 1
@@ -153,6 +153,7 @@ fi
 install_enable_app "$APPROVAL_BRANCH" approval
 install_enable_app "$CALENDAR_BRANCH" calendar
 install_enable_app "$CONTACTS_BRANCH" contacts
+install_enable_app "$DECK_BRANCH" deck
 install_enable_app "$FIRSTRUNWIZARD_BRANCH" firstrunwizard
 install_enable_app "$LOGREADER_BRANCH" logreader
 install_enable_app "$MAPS_BRANCH" maps
