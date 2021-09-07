@@ -128,6 +128,11 @@ if [ -n "$BRANCH" ] && ! [ -f "/var/www/$APPID-completed" ]; then
             echo "Could not compile the logreader app."
             exit 1
         fi
+    elif [ "$APPID" = mail ]; then
+        if ! make install-composer-deps || ! make install-npm-deps || ! make build-js-production; then
+            echo "Could not compile the mail app."
+            exit 1
+        fi
     elif [ "$APPID" = notes ]; then
         if ! make init || ! make build-js-production; then
             echo "Could not compile the notes app."
@@ -166,6 +171,7 @@ install_enable_app "$CONTACTS_BRANCH" contacts
 install_enable_app "$DECK_BRANCH" deck
 install_enable_app "$FIRSTRUNWIZARD_BRANCH" firstrunwizard
 install_enable_app "$LOGREADER_BRANCH" logreader
+install_enable_app "$MAIL_BRANCH" mail
 install_enable_app "$MAPS_BRANCH" maps
 install_enable_app "$NOTES_BRANCH" notes
 install_enable_app "$POLLS_BRANCH" polls
