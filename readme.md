@@ -1,9 +1,9 @@
 # Nextcloud easy test instance
-This is a one-command Nextcloud instance that makes it possible to test different branches and apps with only one command.
+This is a one-command Nextcloud instance that makes it possible to test different branches and apps with just one command.
 
 ## How to use this?
 
-### Preparation (only needed if not yet done):
+### Preparation (only needed if not done yet):
 Install Docker on your OS:
 - On Linux via:
     ```shell
@@ -76,7 +76,7 @@ docker rm nextcloud-easy-test
 ```
 
 ### Running in a VM
-If you want to run this in a VM, you need to change the port in the initial command from to `-p 127.0.0.1:8443:443` to `-p 8443:443` and add the following flag: `-e TRUSTED_DOMAIN=ip.of.the.VM` in order to automatically make it work.
+If you want to run this in a VM, you need to change the port in the initial command from `-p 127.0.0.1:8443:443` to `-p 8443:443` and add the following flag: `-e TRUSTED_DOMAIN=ip.of.the.VM` in order to automatically make it work.
 
 ### Additionally Available Environmental Variables
 Additionally, the container currently reacts on the following variables:
