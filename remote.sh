@@ -1,5 +1,29 @@
 #!/bin/bash
 
+# Function to show text in green
+print_green() {
+    local TEXT="$1"
+    printf "%b%s%b\n" "\e[0;92m" "$TEXT" "\e[0m"
+}
+
+# Show how to reach the server
+show_startup_info() {
+    if [ -z "$TRUSTED_DOMAIN" ]; then
+        print_green "The server should now be reachable via https://localhost:8443/"
+    else
+        print_green "The server should now be reachable via https://$TRUSTED_DOMAIN:8443/"
+    fi
+}
+
+# Manual install: will skip everything and just start apache
+manual_install() {
+    if [ -n "$MANUAL_INSTALL" ]; then
+        touch /var/www/server-completed
+        show_startup_info
+        exit 0
+    fi
+}
+
 # Handle empty server branch variable
 if [ -z "$SERVER_BRANCH" ]; then
     export SERVER_BRANCH=master
@@ -37,6 +61,9 @@ if ! [ -f /var/www/server-completed ]; then
     # Initiate submodules
     git submodule update --init
 
+    # Manual install
+    manual_install
+
     # Install Nextcloud
     if ! php -f occ \
             maintenance:install \
@@ -56,6 +83,9 @@ if ! [ -f /var/www/server-completed ]; then
     fi
     touch /var/www/server-completed
 fi
+
+# Manual install
+manual_install
 
 # Install and enable apps
 install_enable_app() {
@@ -215,15 +245,5 @@ if ! php -f occ maintenance:repair; then
     exit 1
 fi
 
-# Function to show text in green
-print_green() {
-    local TEXT="$1"
-    printf "%b%s%b\n" "\e[0;92m" "$TEXT" "\e[0m"
-}
-
 # Show how to reach the server
-if [ -z "$TRUSTED_DOMAIN" ]; then
-    print_green "The server should now be reachable via https://localhost:8443/"
-else
-    print_green "The server should now be reachable via https://$TRUSTED_DOMAIN:8443/"
-fi
+show_startup_info
