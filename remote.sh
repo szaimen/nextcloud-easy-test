@@ -149,47 +149,17 @@ if [ -n "$BRANCH" ] && ! [ -f "/var/www/$APPID-completed" ]; then
         nvm use --lts
     fi
 
-    # Install apps
-    if [ "$APPID" = approval ] || [ "$APPID" = deck ] || [ "$APPID" = maps ] || [ "$APPID" = news ]; then
-        if ! make build; then
-            echo "Could not compile the $APPID app."
+    # Install composer dependencies
+    if [ -f composer.json ]; then
+        if ! composer install --no-dev; then
+            echo "Could not install composer dependencies of the $APPID app."
             exit 1
         fi
-    elif [ "$APPID" = circles ]; then
-        if ! make composer; then
-            echo "Could not initiate the circles app."
-            exit 1
-        fi
-    elif [ "$APPID" = end_to_end_encryption ] || [ "$APPID" = impersonate ] || [ "$APPID" = serverinfo ]; then
-        # No action needed
-        sleep 1
-    elif [ "$APPID" = files_pdfviewer ] || [ "$APPID" = forms ]; then
-        if ! make install-composer-deps || ! make install-npm-deps-dev || ! make build-js-production; then
-            echo "Could not compile the $APPID app."
-            exit 1
-        fi
-    elif [ "$APPID" = groupfolders ] || [ "$APPID" = logreader ]; then
-        if ! make build/main.js; then
-            echo "Could not compile the $APPID app."
-            exit 1
-        fi
-    elif [ "$APPID" = mail ]; then
-        if ! make install-composer-deps || ! make install-npm-deps || ! make build-js-production; then
-            echo "Could not compile the mail app."
-            exit 1
-        fi
-    elif [ "$APPID" = notes ]; then
-        if ! make init || ! make build-js-production; then
-            echo "Could not compile the notes app."
-            exit 1
-        fi
-    elif [ "$APPID" = polls ]; then
-        if ! make setup-build || ! make build-js-production; then
-            echo "Could not compile the polls app."
-            exit 1
-        fi
-    else
-        if ! make dev-setup || ! make build-js-production; then
+    fi
+
+    # Compile apps
+    if [ -f package.json ]; then
+        if ! npm ci || ! npm run build --if-present; then
             echo "Could not compile the $APPID app."
             exit 1
         fi
