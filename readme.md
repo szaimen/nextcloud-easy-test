@@ -108,6 +108,7 @@ TALK_BRANCH
 TASKS_BRANCH
 TEXT_BRANCH
 VIEWER_BRANCH
+ZIPPER_BRANCH
 ```
 
 <details>
@@ -141,6 +142,7 @@ VIEWER_BRANCH
 -e TASKS_BRANCH=master \
 -e TEXT_BRANCH=master \
 -e VIEWER_BRANCH=master \
+-e ZIPPER_BRANCH=master \
 ```
 
 </details>

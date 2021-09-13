@@ -208,6 +208,7 @@ install_enable_app "$TALK_BRANCH" spreed
 install_enable_app "$TASKS_BRANCH" tasks
 install_enable_app "$TEXT_BRANCH" text
 install_enable_app "$VIEWER_BRANCH" viewer
+install_enable_app "$ZIPPER_BRANCH" files_zip
 
 # Clear cache
 cd /var/www/html
