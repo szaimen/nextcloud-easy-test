@@ -202,6 +202,7 @@ install_enable_app "$NOTIFICATIONS_BRANCH" notifications
 install_enable_app "$PDFVIEWER_BRANCH" files_pdfviewer
 install_enable_app "$PHOTOS_BRANCH" photos
 install_enable_app "$POLLS_BRANCH" polls
+install_enable_app "$RECOMMENDATIONS_BRANCH" recommendations
 install_enable_app "$SERVERINFO_BRANCH" serverinfo
 install_enable_app "$TALK_BRANCH" spreed
 install_enable_app "$TASKS_BRANCH" tasks
