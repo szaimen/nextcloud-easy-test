@@ -18,7 +18,7 @@ Run the container:
 
 On Linux and macOS:
 ```
-docker run \
+docker run -it \
 -e SERVER_BRANCH=master \
 --name nextcloud-easy-test \
 -p 127.0.0.1:8443:443 \
@@ -41,7 +41,7 @@ ghcr.io/szaimen/nextcloud-easy-test:latest
 <details>
 <summary>Explanation of the command</summary>
 
-`docker run`  
+`docker run -it`  
 This command creates a new docker container.
 
 `-e SERVER_BRANCH=master`  
