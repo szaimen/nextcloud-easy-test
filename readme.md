@@ -29,7 +29,7 @@ ghcr.io/szaimen/nextcloud-easy-test:latest
 <summary>On Windows</summary>
 
 ```
-docker run ^
+docker run -it ^
 -e SERVER_BRANCH=master ^
 --name nextcloud-easy-test ^
 -p 127.0.0.1:8443:443 ^
