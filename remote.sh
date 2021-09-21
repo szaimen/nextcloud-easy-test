@@ -206,6 +206,7 @@ install_enable_app "$PHOTOS_BRANCH" photos
 install_enable_app "$POLLS_BRANCH" polls
 install_enable_app "$RECOMMENDATIONS_BRANCH" recommendations
 install_enable_app "$SERVERINFO_BRANCH" serverinfo
+install_enable_app "$SUSPICIOUSLOGIN_BRANCH" suspicious_login
 install_enable_app "$TALK_BRANCH" spreed
 install_enable_app "$TASKS_BRANCH" tasks
 install_enable_app "$TEXT_BRANCH" text
