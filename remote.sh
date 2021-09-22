@@ -168,6 +168,11 @@ if [ -n "$BRANCH" ] && ! [ -f "/var/www/$APPID-completed" ]; then
     # Go into occ directory
     cd /var/www/html
 
+    # Temp hack in order to make the suspicious login app work
+    if [ "$APPID" = suspicious_login ]; then
+        php -f occ app:enable "$APPID" --force
+    fi
+
     # Enable app
     if ! php -f occ app:enable "$APPID"; then
         echo "Could not enable the $APPID app."
