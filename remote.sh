@@ -149,8 +149,15 @@ if [ -n "$BRANCH" ] && ! [ -f "/var/www/$APPID-completed" ]; then
         nvm use --lts
     fi
 
+    if [ "$APPID" = mail ]; then
+        wget https://getcomposer.org/download/1.10.22/composer.phar
+        chmod +x ./composer.phar
+        if ! ./composer.phar install --no-dev; then
+            echo "Could not install composer dependencies of the mail app."
+            exit 1
+        fi
     # Install composer dependencies
-    if [ -f composer.json ]; then
+    elif [ -f composer.json ]; then
         if ! composer install --no-dev; then
             echo "Could not install composer dependencies of the $APPID app."
             exit 1
@@ -196,7 +203,7 @@ install_enable_app "$GUESTS_BRANCH" guests
 install_enable_app "$IMPERSONATE_BRANCH" impersonate
 install_enable_app "$ISSUTEMPLATE_BRANCH" issuetemplate
 install_enable_app "$LOGREADER_BRANCH" logreader
-# install_enable_app "$MAIL_BRANCH" mail
+install_enable_app "$MAIL_BRANCH" mail
 install_enable_app "$MAPS_BRANCH" maps
 install_enable_app "$NEWS_BRANCH" news
 install_enable_app "$NOTES_BRANCH" notes
