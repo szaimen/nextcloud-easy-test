@@ -139,14 +139,14 @@ if [ -n "$BRANCH" ] && ! [ -f "/var/www/$APPID-completed" ]; then
                 echo "The node version of $APPID is too new. Need to update the container."
                 exit 1
             fi
-            nvm use 16.8.0
+            nvm use lts/gallium
         else
             set +x
-            nvm use --lts
+            nvm use lts/fermium
         fi
     else
         set +x
-        nvm use --lts
+        nvm use lts/fermium
     fi
 
     if [ "$APPID" = mail ]; then

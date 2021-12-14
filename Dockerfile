@@ -58,12 +58,12 @@ RUN chown www-data:www-data -R /var/www
 # Switch to www-data user to make container more secure
 USER www-data
 
-# Install NVM (Fermium = v14)
-RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash \
+# Install NVM (Fermium = v14, Gallium = v16)
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash \
     && export NVM_DIR="/var/www/.nvm" \
     && . "$NVM_DIR/nvm.sh" \
-    && nvm install 16.8.0 --latest-npm \
-    && nvm install --lts=FERMIUM --latest-npm
+    && nvm install lts/gallium --latest-npm \
+    && nvm install lts/fermium --latest-npm
 
 # Set entrypoint
 ENTRYPOINT  ["start.sh"]
