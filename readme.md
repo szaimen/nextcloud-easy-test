@@ -116,9 +116,9 @@ ZIPPER_BRANCH
 -e ACTIVITY_BRANCH=master \
 -e APPROVAL_BRANCH=master \
 -e BOOKMARKS_BRANCH=master \
--e CALENDAR_BRANCH=master \
+-e CALENDAR_BRANCH=main \
 -e CIRCLES_BRANCH=master \
--e CONTACTS_BRANCH=master \
+-e CONTACTS_BRANCH=main \
 -e DECK_BRANCH=master \
 -e DOWNLOADLIMIT_BRANCH=master \
 -e E2EE_BRANCH=master \
@@ -129,7 +129,7 @@ ZIPPER_BRANCH
 -e IMPERSONATE_BRANCH=master \
 -e ISSUTEMPLATE_BRANCH=master \
 -e LOGREADER_BRANCH=master \
--e MAIL_BRANCH=master \
+-e MAIL_BRANCH=main \
 -e MAPS_BRANCH=master \
 -e NEWS_BRANCH=master \
 -e NOTES_BRANCH=master \
