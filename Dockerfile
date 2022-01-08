@@ -71,7 +71,3 @@ ENTRYPOINT  ["start.sh"]
 # Set CMD
 CMD ["apache2-foreground"]
 
-# Clone master branch of server
-RUN cd /var/www/html && \
-    rm -rf ./* && \
-    git clone https://github.com/nextcloud/server.git .
