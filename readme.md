@@ -154,4 +154,4 @@ If one of the above variables are set via e.g. `-e CALENDAR_BRANCH=master` durin
 `MANUAL_INSTALL` if the variable is set, it will skip all apps variables and only clone the given server branch and start Apache directly. You will then be able to provide your own credentials and install recommended apps.
 
 ## How does it work?
-The docker image comes pre-bundled with all needed dependencies for a minimal instance of Nextcloud, has the master branch already included and allows to define a target branch via environmental variables that will automatically be switched to and installed during the container startup. For a refresh, you need to recreate the container by first removing it and then running the same command again.
+The docker image comes pre-bundled with all needed dependencies for a minimal instance of Nextcloud and allows to define a target branch via environmental variables that will automatically be cloned and compiled during the container startup. For a refresh, you need to recreate the container by first removing it and then running the same command again.
