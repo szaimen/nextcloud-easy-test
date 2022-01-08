@@ -29,6 +29,11 @@ if [ -z "$SERVER_BRANCH" ]; then
     export SERVER_BRANCH="nextcloud:master"
 fi
 
+# Handle case that branch is present in nextcloud repo
+if ! echo "$SERVER_BRANCH" | grep -q ':'; then
+    export SERVER_BRANCH="nextcloud:$SERVER_BRANCH"
+fi
+
 # Get NVM code
 export NVM_DIR="/var/www/.nvm"
 . "$NVM_DIR/nvm.sh"
@@ -39,10 +44,7 @@ if ! [ -f /var/www/server-completed ]; then
     FORK_OWNER="${SERVER_BRANCH%%:*}"
     FORK_BRANCH="${SERVER_BRANCH#*:}"
     set +x
-    cd /var/www
-    rm -rf html
-    mkdir html
-    cd html
+    cd /var/www/nextcloud
     if ! git clone https://github.com/"$FORK_OWNER"/server.git --branch "$FORK_BRANCH" --single-branch --depth 1 .; then
         echo "Could not clone the requested server branch '$FORK_BRANCH' of '$FORK_OWNER'. Does it exist?"
         exit 1
@@ -88,7 +90,7 @@ local APPID="$2"
 if [ -n "$BRANCH" ] && ! [ -f "/var/www/$APPID-completed" ]; then
 
     # Go into apps directory
-    cd /var/www/html/apps
+    cd /var/www/nextcloud/apps
 
     # Remove app directory
     if [ -d ./"$APPID" ]; then
@@ -161,7 +163,7 @@ if [ -n "$BRANCH" ] && ! [ -f "/var/www/$APPID-completed" ]; then
     fi
 
     # Go into occ directory
-    cd /var/www/html
+    cd /var/www/nextcloud
 
     # Enable app
     if ! php -f occ app:enable "$APPID"; then
@@ -208,7 +210,7 @@ install_enable_app "$VIEWER_BRANCH" viewer
 install_enable_app "$ZIPPER_BRANCH" files_zip
 
 # Clear cache
-cd /var/www/html
+cd /var/www/nextcloud
 if ! php -f occ maintenance:repair; then
     echo "Could not clear the cache"
     exit 1

@@ -52,8 +52,11 @@ RUN a2dissite 000-default && \
 COPY start.sh /usr/bin/
 RUN chmod +x /usr/bin/start.sh
 
-# Correctly set rights
-RUN chown www-data:www-data -R /var/www
+# Correctly set rights and add directories
+RUN cd /var/www; \
+    rm -rf nextcloud; \
+    mkdir nextcloud; \
+    chown www-data:www-data -R /var/www
 
 # Switch to www-data user to make container more secure
 USER www-data
