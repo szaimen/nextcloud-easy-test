@@ -79,6 +79,24 @@ fi
 # Manual install
 manual_install
 
+# Handle skeleton archive url
+if [ -n "$SKELETON_ARCHIVE_URL" ] && ! [ -f "/var/www/skeleton-completed" ]; then
+    if ! curl -fsSL "$SKELETON_ARCHIVE_URL" -o /var/www/nextcloud/data/skeletondir.tar.gz; then
+        echo "Could not get the sekeleton archive url"
+        exit 1
+    fi
+    mkdir -p "/var/www/nextcloud/data/skeletondir"
+    if ! tar -xjf "/var/www/nextcloud/data/skeletondir.tar.gz" -C "/var/www/nextcloud/data/skeletondir"; then
+        echo "Could not untar the archive. Is it a tar.gz archive?"
+        exit 1
+    fi
+    if ! php -f occ config:system:set skeletondirectory --value="/var/www/nextcloud/data/skeletondir"; then
+        echo "Could not set the skeletondir"
+        exit 1
+    fi
+    touch /var/www/skeleton-completed
+fi
+
 # Install and enable apps
 install_enable_app() {
 
