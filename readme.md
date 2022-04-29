@@ -155,5 +155,7 @@ If one of the above variables are set via e.g. `-e CALENDAR_BRANCH=master` durin
 
 `SKELETON_ARCHIVE_URL` if the variable is set it will try to download a tar.gz file from a remote server, will untar it and will try to use that as a skeletondir which will make them the default files for new users ony the test instance.
 
+`COMPILE_SERVER` if the variable is set it will compile javascript files for the chosen server branch. This only works for branches starting from version 24.0.0.
+
 ## How does it work?
 The docker image comes pre-bundled with all needed dependencies for a minimal instance of Nextcloud and allows to define a target branch via environmental variables that will automatically be cloned and compiled during the container startup. For a refresh, you need to recreate the container by first removing it and then running the same command again.

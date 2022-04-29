@@ -24,6 +24,11 @@ manual_install() {
     fi
 }
 
+# version_greater A B returns whether A > B
+version_greater() {
+    [ "$(printf '%s\n' "$@" | sort -t '.' -n -k1,1 -k2,2 -k3,3 -k4,4 | head -n 1)" != "$1" ]
+}
+
 # Handle empty server branch variable
 if [ -z "$SERVER_BRANCH" ]; then
     export SERVER_BRANCH="nextcloud:master"
@@ -52,6 +57,23 @@ if ! [ -f /var/www/server-completed ]; then
 
     # Initiate submodules
     git submodule update --init
+
+    # Allow to compile the server javascript
+    if [ -n "$COMPILE_SERVER" ]; then
+        set -x
+        installed_version="$(php -r 'require "/var/www/nextcloud/version.php"; echo implode(".", $OC_Version);')"
+        if version_greater "$installed_version" "24.0.0.0"; then
+            echo "Compiling server..."
+            if ! npm ci || ! npm run build --if-present; then
+                echo "Could not compile server."
+                exit 1
+            fi
+        else
+            echo "Could not compile server because the version is not higher than 24.0.0"
+            exit 1
+        fi
+        set +x
+    fi
 
     # Manual install
     manual_install
