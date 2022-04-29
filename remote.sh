@@ -81,12 +81,13 @@ manual_install
 
 # Handle skeleton archive url
 if [ -n "$SKELETON_ARCHIVE_URL" ] && ! [ -f "/var/www/skeleton-completed" ]; then
+    set -x
     if ! curl -fsSL "$SKELETON_ARCHIVE_URL" -o /var/www/nextcloud/data/skeletondir.tar.gz; then
         echo "Could not get the sekeleton archive url"
         exit 1
     fi
     mkdir -p "/var/www/nextcloud/data/skeletondir"
-    if ! tar -xjf "/var/www/nextcloud/data/skeletondir.tar.gz" -C "/var/www/nextcloud/data/skeletondir"; then
+    if ! tar -xf "/var/www/nextcloud/data/skeletondir.tar.gz" -C "/var/www/nextcloud/data/skeletondir"; then
         echo "Could not untar the archive. Is it a tar.gz archive?"
         exit 1
     fi
@@ -94,6 +95,19 @@ if [ -n "$SKELETON_ARCHIVE_URL" ] && ! [ -f "/var/www/skeleton-completed" ]; the
         echo "Could not set the skeletondir"
         exit 1
     fi
+    if ! rm -r /var/www/nextcloud/data/admin/files/*; then
+        echo "Could not remove the default admin files"
+        exit 1
+    fi
+    if ! cp -R /var/www/nextcloud/data/skeletondir/* /var/www/nextcloud/data/admin/files/; then
+        echo "Could not copy the files to the admin user"
+        exit 1
+    fi
+    if ! php -f occ files:scan admin; then
+        echo "Could not scan the new files for the admin user."
+        exit 1
+    fi
+    set +x
     touch /var/www/skeleton-completed
 fi
 
