@@ -31,6 +31,7 @@ version_greater() {
 
 # Handle node versions
 handle_node_version() {
+    set -x
     if [ -f package.json ]; then
         local NODE_LINE=$(grep '"node":' package.json | head -1)
     fi
@@ -41,11 +42,14 @@ handle_node_version() {
                 echo "The node version of $APPID is too new. Need to update the container."
                 exit 1
             fi
+            set +x
             nvm use lts/gallium
         else
+            set +x
             nvm use lts/fermium
         fi
     else
+        set +x
         nvm use lts/fermium
     fi
 }
@@ -194,9 +198,7 @@ if [ -n "$BRANCH" ] && ! [ -f "/var/www/$APPID-completed" ]; then
     cd ./"$APPID"
     
     # Handle node version
-    set -x
     handle_node_version
-    set +x
 
     if [ "$APPID" = mail ]; then
         wget https://getcomposer.org/download/1.10.22/composer.phar
