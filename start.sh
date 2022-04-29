@@ -14,5 +14,8 @@ if ! bash remote.sh; then
     exit 1
 fi
 
+# Start system cron
+exec bash /cron.sh &
+
 # Run the default CMD script
 exec "$@"

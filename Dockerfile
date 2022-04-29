@@ -49,8 +49,10 @@ RUN a2dissite 000-default && \
     service apache2 restart 
 
 # Copy start script
+COPY cron.sh /cron.sh
 COPY start.sh /usr/bin/
-RUN chmod +x /usr/bin/start.sh
+RUN chmod +x /usr/bin/start.sh; \
+    chmod +x /cron.sh
 
 # Correctly set rights and add directories
 RUN cd /var/www; \
