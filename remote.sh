@@ -29,6 +29,27 @@ version_greater() {
     [ "$(printf '%s\n' "$@" | sort -t '.' -n -k1,1 -k2,2 -k3,3 -k4,4 | head -n 1)" != "$1" ]
 }
 
+# Handle node versions
+handle_node_version() {
+    if [ -f package.json ]; then
+        local NODE_LINE=$(grep '"node":' package.json | head -1)
+    fi
+    if [ -n "$NODE_LINE" ] && echo "$NODE_LINE" | grep -q '>='; then
+        local NODE_VERSION="$(echo "$NODE_LINE" | grep -oP '>=[0-9]+' | sed 's|>=||')"
+        if [ -n "$NODE_VERSION" ] && [ "$NODE_VERSION" -gt 14 ]; then
+            if [ "$NODE_VERSION" -gt 16 ]; then
+                echo "The node version of $APPID is too new. Need to update the container."
+                exit 1
+            fi
+            nvm use lts/gallium
+        else
+            nvm use lts/fermium
+        fi
+    else
+        nvm use lts/fermium
+    fi
+}
+
 # Handle empty server branch variable
 if [ -z "$SERVER_BRANCH" ]; then
     export SERVER_BRANCH="nextcloud:master"
@@ -63,6 +84,8 @@ if ! [ -f /var/www/server-completed ]; then
         set -x
         installed_version="$(php -r 'require "/var/www/nextcloud/version.php"; echo implode(".", $OC_Version);')"
         if version_greater "$installed_version" "24.0.0.0"; then
+            # Handle node version
+            handle_node_version
             echo "Compiling server..."
             if ! npm ci || ! npm run build --if-present; then
                 echo "Could not compile server."
@@ -170,28 +193,10 @@ if [ -n "$BRANCH" ] && ! [ -f "/var/www/$APPID-completed" ]; then
     # Go into app directory
     cd ./"$APPID"
     
-    # Handle node versions
+    # Handle node version
     set -x
-    if [ -f package.json ]; then
-        local NODE_LINE=$(grep '"node":' package.json | head -1)
-    fi
-    if [ -n "$NODE_LINE" ] && echo "$NODE_LINE" | grep -q '>='; then
-        local NODE_VERSION="$(echo "$NODE_LINE" | grep -oP '>=[0-9]+' | sed 's|>=||')"
-        if [ -n "$NODE_VERSION" ] && [ "$NODE_VERSION" -gt 14 ]; then
-            set +x
-            if [ "$NODE_VERSION" -gt 16 ]; then
-                echo "The node version of $APPID is too new. Need to update the container."
-                exit 1
-            fi
-            nvm use lts/gallium
-        else
-            set +x
-            nvm use lts/fermium
-        fi
-    else
-        set +x
-        nvm use lts/fermium
-    fi
+    handle_node_version
+    set +x
 
     if [ "$APPID" = mail ]; then
         wget https://getcomposer.org/download/1.10.22/composer.phar
