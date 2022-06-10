@@ -200,15 +200,15 @@ if [ -n "$BRANCH" ] && ! [ -f "/var/www/$APPID-completed" ]; then
     # Handle node version
     handle_node_version
 
-    if [ "$APPID" = mail ]; then
-        wget https://getcomposer.org/download/1.10.22/composer.phar
-        chmod +x ./composer.phar
-        if ! ./composer.phar install --no-dev; then
-            echo "Could not install composer dependencies of the mail app."
-            exit 1
-        fi
+    # if [ "$APPID" = mail ]; then
+    #     wget https://getcomposer.org/download/1.10.22/composer.phar
+    #     chmod +x ./composer.phar
+    #     if ! ./composer.phar install --no-dev; then
+    #         echo "Could not install composer dependencies of the mail app."
+    #         exit 1
+    #     fi
     # Install composer dependencies
-    elif [ -f composer.json ]; then
+    if [ -f composer.json ]; then
         if ! composer install --no-dev; then
             echo "Could not install composer dependencies of the $APPID app."
             exit 1
