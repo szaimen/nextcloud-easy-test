@@ -7,6 +7,7 @@ RUN apt-get update; \
         openssl \
         nano \
         openssh-client \
+        unzip \
     ; \
     rm -rf /var/lib/apt/lists/*
 
