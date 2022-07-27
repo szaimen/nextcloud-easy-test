@@ -54,6 +54,25 @@ handle_node_version() {
     fi
 }
 
+# Handle npm versions
+handle_npm_version() {
+    set -x
+    if [ -f package.json ]; then
+        local NPM_LINE=$(grep '"npm":' package.json | head -1)
+    fi
+    if [ -n "$NPM_LINE" ] && echo "$NPM_LINE" | grep -q '\^'; then
+        local NPM_VERSION="$(echo "$NPM_LINE" | grep -oP '\^[0-9]+' | sed 's|\^||')"
+        if [ -n "$NPM_VERSION" ] && [ "$NPM_VERSION" -eq 7 ]; then
+            set +x
+            npm i -g npm@latest-7
+            return
+        fi
+    fi
+
+    set +x
+    nvm install-latest-npm
+}
+
 # Handle empty server branch variable
 if [ -z "$SERVER_BRANCH" ]; then
     export SERVER_BRANCH="nextcloud:master"
@@ -90,6 +109,10 @@ if ! [ -f /var/www/server-completed ]; then
         if version_greater "$installed_version" "24.0.0.0"; then
             # Handle node version
             handle_node_version
+
+            # Handle npm version
+            handle_npm_version
+
             echo "Compiling server..."
             if ! npm ci || ! npm run build --if-present; then
                 echo "Could not compile server."
@@ -199,6 +222,9 @@ if [ -n "$BRANCH" ] && ! [ -f "/var/www/$APPID-completed" ]; then
     
     # Handle node version
     handle_node_version
+
+    # Handel npm version
+    handle_npm_version
 
     # if [ "$APPID" = mail ]; then
     #     wget https://getcomposer.org/download/1.10.22/composer.phar
