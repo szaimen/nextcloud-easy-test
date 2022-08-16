@@ -36,7 +36,7 @@ handle_node_version() {
         local NODE_LINE=$(grep '"node":' package.json | head -1)
     fi
     if [ -n "$NODE_LINE" ] && echo "$NODE_LINE" | grep -q '>='; then
-        local NODE_VERSION="$(echo "$NODE_LINE" | grep -oP '>=[0-9]+' | sed 's|>=||')"
+        local NODE_VERSION="$(echo "$NODE_LINE" | grep -oP '>=[0-9]+' | sed 's|>=||' | head -n 1)"
         if [ -n "$NODE_VERSION" ] && [ "$NODE_VERSION" -gt 14 ]; then
             if [ "$NODE_VERSION" -gt 16 ]; then
                 echo "The node version of $APPID is too new. Need to update the container."
@@ -61,7 +61,7 @@ handle_npm_version() {
         local NPM_LINE=$(grep '"npm":' package.json | head -1)
     fi
     if [ -n "$NPM_LINE" ] && echo "$NPM_LINE" | grep -q '\^'; then
-        local NPM_VERSION="$(echo "$NPM_LINE" | grep -oP '\^[0-9]+' | sed 's|\^||')"
+        local NPM_VERSION="$(echo "$NPM_LINE" | grep -oP '\^[0-9]+' | sed 's|\^||' | head -n 1)"
         if [ -n "$NPM_VERSION" ] && [ "$NPM_VERSION" -eq 7 ]; then
             set +x
             npm i -g npm@latest-7
