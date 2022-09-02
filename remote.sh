@@ -35,7 +35,7 @@ handle_node_version() {
     if [ -f package.json ]; then
         local NODE_LINE=$(grep '"node":' package.json | head -1)
     fi
-    if [ -n "$NODE_LINE" ] && echo "$NODE_LINE" | grep -q '>='; then
+    if [ -n "$NODE_LINE" ] && echo "$NODE_LINE" | grep -q '\^'; then
         local NODE_VERSION="$(echo "$NODE_LINE" | grep -oP '\^[0-9]+' | sed 's|\^||' | head -n 1)"
         if [ -n "$NODE_VERSION" ] && [ "$NODE_VERSION" -gt 14 ]; then
             if [ "$NODE_VERSION" -gt 16 ]; then
