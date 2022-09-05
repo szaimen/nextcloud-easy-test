@@ -114,7 +114,7 @@ if ! [ -f /var/www/server-completed ]; then
             handle_npm_version
 
             echo "Compiling server..."
-            if ! npm ci || ! npm run build --if-present; then
+            if ! npm ci || ! npm run build --if-present || ! npm run sass --if-present || ! npm run icon --if-present; then
                 echo "Could not compile server."
                 exit 1
             fi
