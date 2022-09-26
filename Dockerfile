@@ -46,8 +46,7 @@ COPY apache.conf /etc/apache2/sites-available/
 # Adjust apache sites
 RUN a2dissite 000-default && \
     a2dissite default-ssl && \
-    a2ensite apache.conf && \
-    service apache2 restart 
+    a2ensite apache.conf
 
 # Copy start script
 COPY cron.sh /cron.sh
