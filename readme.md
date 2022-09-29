@@ -22,6 +22,7 @@ docker run -it \
 -e SERVER_BRANCH=master \
 --name nextcloud-easy-test \
 -p 127.0.0.1:8443:443 \
+--volume="nextcloud_easy_test_npm_cache_volume:/var/www/.npm" \
 ghcr.io/szaimen/nextcloud-easy-test:latest
 ```
 
@@ -33,6 +34,7 @@ docker run -it ^
 -e SERVER_BRANCH=master ^
 --name nextcloud-easy-test ^
 -p 127.0.0.1:8443:443 ^
+--volume="nextcloud_easy_test_npm_cache_volume:/var/www/.npm" ^
 ghcr.io/szaimen/nextcloud-easy-test:latest
 ```
 
@@ -52,6 +54,9 @@ This gives the container a distinct name `nextcloud-easy-test` so that you are a
 
 `-p 127.0.0.1:8443:443`  
 This makes the container listen on `localhost` and maps the host port `8443` to the container port `443` so that you are able to access the container by opening https://localhost:8443.
+
+`--volume="nextcloud_easy_test_npm_cache_volume:/var/www/.npm"`
+This stores the npm cache in a docker volume so that compiling apps takes less time from the second time. You can clean it with `sudo docker volume rm nextcloud_easy_test_npm_cache_volume`.
 
 `ghcr.io/szaimen/nextcloud-easy-test:latest`  
 This is the image name that you will use as base for the container. `latest` is the tag that will be used.
