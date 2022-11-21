@@ -241,11 +241,6 @@ if [ -n "$BRANCH" ] && ! [ -f "/var/www/$APPID-completed" ]; then
         fi
     fi
 
-    # Fix npm ci for mail
-    if [ "$APPID" = mail ]; then
-        npm install --no-audit
-    fi
-
     # Compile apps
     if [ -f package.json ]; then
         if ! npm ci --no-audit || ! npm run dev --if-present; then
