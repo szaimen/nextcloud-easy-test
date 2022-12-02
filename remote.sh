@@ -33,10 +33,12 @@ version_greater() {
 handle_node_version() {
     set -x
     if [ -f package.json ]; then
-        local NODE_LINE=$(grep '"node":' package.json | head -1)
+        local NODE_LINE
+        NODE_LINE=$(grep '"node":' package.json | head -1)
     fi
     if [ -n "$NODE_LINE" ] && echo "$NODE_LINE" | grep -q '\^'; then
-        local NODE_VERSION="$(echo "$NODE_LINE" | grep -oP '\^[0-9]+' | sed 's|\^||' | head -n 1)"
+        local NODE_VERSION
+        NODE_VERSION="$(echo "$NODE_LINE" | grep -oP '\^[0-9]+' | sed 's|\^||' | head -n 1)"
         if [ -n "$NODE_VERSION" ] && [ "$NODE_VERSION" -gt 14 ]; then
             if [ "$NODE_VERSION" -gt 16 ]; then
                 echo "The node version of $APPID is too new. Need to update the container."
@@ -58,10 +60,12 @@ handle_node_version() {
 handle_npm_version() {
     set -x
     if [ -f package.json ]; then
-        local NPM_LINE=$(grep '"npm":' package.json | head -1)
+        local NPM_LINE
+        NPM_LINE=$(grep '"npm":' package.json | head -1)
     fi
     if [ -n "$NPM_LINE" ] && echo "$NPM_LINE" | grep -q '\^'; then
-        local NPM_VERSION="$(echo "$NPM_LINE" | grep -oP '\^[0-9]+' | sed 's|\^||' | head -n 1)"
+        local NPM_VERSION
+        NPM_VERSION="$(echo "$NPM_LINE" | grep -oP '\^[0-9]+' | sed 's|\^||' | head -n 1)"
         if [ -n "$NPM_VERSION" ] && [ "$NPM_VERSION" -eq 7 ]; then
             set +x
             npm i -g npm@latest-7
@@ -71,6 +75,46 @@ handle_npm_version() {
 
     set +x
     nvm install-latest-npm
+}
+
+install_nextcloud_vue() {
+    if [ -n "$NEXTCLOUDVUE_BRANCH" ] && [ -f "/var/www/nextcloud-vue-completed" ]; then
+        set -x
+        local VUE_OWNER="${NEXTCLOUDVUE_BRANCH%%:*}"
+        local VUE_BRANCH="${NEXTCLOUDVUE_BRANCH#*:}"
+        set +x
+        mkdir /var/www/nextcloud-vue
+        cd /var/www/nextcloud-vue || exit
+        if ! git clone https://github.com/"$VUE_OWNER"/nextcloud-vue.git --branch "$VUE_BRANCH" --single-branch --depth 1 .; then
+            echo "Could not clone the requested server branch '$VUE_BRANCH' of '$VUE_OWNER'. Does it exist?"
+            exit 1
+        fi
+
+        # Handle node version
+        handle_node_version
+
+        # Handle npm version
+        handle_npm_version
+
+        echo "Compiling Nextcloud vue..."
+        if ! npm ci --no-audit || ! npm run dev --if-present; then
+            echo "Could not compile Nextcloud vue"
+            exit 1
+        fi
+
+        touch "/var/www/nextcloud-vue-completed"
+    fi
+}
+
+link_nextcloud_vue() {
+    if [ -n "$NEXTCLOUDVUE_BRANCH" ]; then
+        if grep -q '@nextcloud/vue' package.json; then
+            if ! npm link @nextcloud/vue; then
+                echo "Could not link nextcloud vue in $1."
+                exit 1
+            fi
+        fi
+    fi
 }
 
 # Handle empty server branch variable
@@ -85,6 +129,7 @@ fi
 
 # Get NVM code
 export NVM_DIR="/var/www/.nvm"
+# shellcheck disable=SC1091
 . "$NVM_DIR/nvm.sh"
 
 # Get latest changes
@@ -93,7 +138,7 @@ if ! [ -f /var/www/server-completed ]; then
     FORK_OWNER="${SERVER_BRANCH%%:*}"
     FORK_BRANCH="${SERVER_BRANCH#*:}"
     set +x
-    cd /var/www/nextcloud
+    cd /var/www/nextcloud || exit
     if ! git clone https://github.com/"$FORK_OWNER"/server.git --branch "$FORK_BRANCH" --single-branch --depth 1 .; then
         echo "Could not clone the requested server branch '$FORK_BRANCH' of '$FORK_OWNER'. Does it exist?"
         exit 1
@@ -105,8 +150,13 @@ if ! [ -f /var/www/server-completed ]; then
     # Allow to compile the server javascript
     if [ -n "$COMPILE_SERVER" ]; then
         set -x
+        # shellcheck disable=SC2016
         installed_version="$(php -r 'require "/var/www/nextcloud/version.php"; echo implode(".", $OC_Version);')"
         if version_greater "$installed_version" "24.0.0.0"; then
+            # Install Nextcloud vue
+            install_nextcloud_vue
+            cd /var/www/nextcloud || exit
+
             # Handle node version
             handle_node_version
 
@@ -114,7 +164,7 @@ if ! [ -f /var/www/server-completed ]; then
             handle_npm_version
 
             echo "Compiling server..."
-            if ! npm ci || ! npm run dev --if-present || ! npm run sass --if-present || ! npm run icon --if-present; then
+            if ! npm ci --no-audit || ! link_nextcloud_vue server || ! npm run dev --if-present || ! npm run sass --if-present || ! npm run icon --if-present; then
                 echo "Could not compile server."
                 exit 1
             fi
@@ -194,7 +244,7 @@ local APPID="$2"
 if [ -n "$BRANCH" ] && ! [ -f "/var/www/$APPID-completed" ]; then
 
     # Go into apps directory
-    cd /var/www/nextcloud/apps
+    cd /var/www/nextcloud/apps || exit
 
     # Remove app directory
     if [ -d ./"$APPID" ]; then
@@ -217,8 +267,12 @@ if [ -n "$BRANCH" ] && ! [ -f "/var/www/$APPID-completed" ]; then
         exit 1
     fi
 
+    # Install Nextcloud vue
+    install_nextcloud_vue
+    cd /var/www/nextcloud/apps/ || exit
+
     # Go into app directory
-    cd ./"$APPID"
+    cd ./"$APPID" || exit
     
     # Handle node version
     handle_node_version
@@ -233,6 +287,7 @@ if [ -n "$BRANCH" ] && ! [ -f "/var/www/$APPID-completed" ]; then
     #         echo "Could not install composer dependencies of the mail app."
     #         exit 1
     #     fi
+
     # Install composer dependencies
     if [ -f composer.json ]; then
         if ! composer install --no-dev; then
@@ -243,14 +298,16 @@ if [ -n "$BRANCH" ] && ! [ -f "/var/www/$APPID-completed" ]; then
 
     # Compile apps
     if [ -f package.json ]; then
-        if ! npm ci --no-audit || ! npm run dev --if-present; then
+        # Link nextcloud vue
+        link_nextcloud_vue "$APPID"
+        if ! npm ci --no-audit || ! link_nextcloud_vue "$APPID" || ! npm run dev --if-present; then
             echo "Could not compile the $APPID app."
             exit 1
         fi
     fi
 
     # Go into occ directory
-    cd /var/www/nextcloud
+    cd /var/www/nextcloud || exit
 
     # Enable app
     if ! php -f occ app:enable "$APPID"; then
@@ -274,6 +331,7 @@ install_enable_app "$DECK_BRANCH" deck
 install_enable_app "$DOWNLOADLIMIT_BRANCH" files_downloadlimit
 install_enable_app "$E2EE_BRANCH" end_to_end_encryption
 install_enable_app "$FIRSTRUNWIZARD_BRANCH" firstrunwizard
+# shellcheck disable=SC2153
 install_enable_app "$FORMS_BRANCH" forms
 install_enable_app "$GROUPFOLDERS_BRANCH" groupfolders
 install_enable_app "$GUESTS_BRANCH" guests
@@ -282,7 +340,8 @@ install_enable_app "$INTEGRATIONGITHUB_BRANCH" integration_github
 install_enable_app "$ISSUTEMPLATE_BRANCH" issuetemplate
 install_enable_app "$LOGREADER_BRANCH" logreader
 install_enable_app "$MAIL_BRANCH" mail
-install_enable_app "$MAPS_BRANCH" maps
+# shellcheck disable=SC2153
+install_enable_app "$MAPS_BRANCH" maps  
 install_enable_app "$NEWS_BRANCH" news
 install_enable_app "$NOTES_BRANCH" notes
 install_enable_app "$NOTIFICATIONS_BRANCH" notifications
@@ -301,7 +360,7 @@ install_enable_app "$VIEWER_BRANCH" viewer
 install_enable_app "$ZIPPER_BRANCH" files_zip
 
 # Clear cache
-cd /var/www/nextcloud
+cd /var/www/nextcloud || exit
 if ! php -f occ maintenance:repair; then
     echo "Could not clear the cache"
     exit 1
