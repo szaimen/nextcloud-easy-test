@@ -170,5 +170,7 @@ If one of the above variables are set via e.g. `-e CALENDAR_BRANCH=master` durin
 
 `COMPILE_SERVER` if the variable is set it will compile javascript files for the chosen server branch. This only works for branches starting from version 24.0.0.
 
+`NEXTCLOUDVUE_BRANCH` if the variable is set it will compile javascript files for the chosen nextcloud vue branch and automatically link all chosen apps that use nextcloud vue and additionally the server if COMPILE_SERVER is set.
+
 ## How does it work?
 The docker image comes pre-bundled with all needed dependencies for a minimal instance of Nextcloud and allows to define a target branch via environmental variables that will automatically be cloned and compiled during the container startup. For a refresh, you need to recreate the container by first removing it and then running the same command again.

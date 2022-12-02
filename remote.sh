@@ -78,7 +78,11 @@ handle_npm_version() {
 }
 
 install_nextcloud_vue() {
-    if [ -n "$NEXTCLOUDVUE_BRANCH" ] && [ -f "/var/www/nextcloud-vue-completed" ]; then
+    if [ -n "$NEXTCLOUDVUE_BRANCH" ] && [ ! -f "/var/www/nextcloud-vue-completed" ]; then
+        # Handle case that branch is present in nextcloud repo
+        if ! echo "$NEXTCLOUDVUE_BRANCH" | grep -q ':'; then
+            NEXTCLOUDVUE_BRANCH="nextcloud:$NEXTCLOUDVUE_BRANCH"
+        fi
         set -x
         local VUE_OWNER="${NEXTCLOUDVUE_BRANCH%%:*}"
         local VUE_BRANCH="${NEXTCLOUDVUE_BRANCH#*:}"
@@ -86,7 +90,7 @@ install_nextcloud_vue() {
         mkdir /var/www/nextcloud-vue
         cd /var/www/nextcloud-vue || exit
         if ! git clone https://github.com/"$VUE_OWNER"/nextcloud-vue.git --branch "$VUE_BRANCH" --single-branch --depth 1 .; then
-            echo "Could not clone the requested server branch '$VUE_BRANCH' of '$VUE_OWNER'. Does it exist?"
+            echo "Could not clone the requested nextcloud vue branch '$VUE_BRANCH' of '$VUE_OWNER'. Does it exist?"
             exit 1
         fi
 
@@ -101,6 +105,8 @@ install_nextcloud_vue() {
             echo "Could not compile Nextcloud vue"
             exit 1
         fi
+
+        npm link
 
         touch "/var/www/nextcloud-vue-completed"
     fi
