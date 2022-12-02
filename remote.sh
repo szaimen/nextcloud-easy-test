@@ -73,6 +73,46 @@ handle_npm_version() {
     nvm install-latest-npm
 }
 
+install_nextcloud_vue() {
+    if [ -n "$NEXTCLOUDVUE_BRANCH" ] && [ -f "/var/www/nextcloud-vue-completed" ]; then
+        set -x
+        local VUE_OWNER="${NEXTCLOUDVUE_BRANCH%%:*}"
+        local VUE_BRANCH="${NEXTCLOUDVUE_BRANCH#*:}"
+        set +x
+        mkdir /var/www/nextcloud-vue
+        cd /var/www/nextcloud-vue
+        if ! git clone https://github.com/"$VUE_OWNER"/nextcloud-vue.git --branch "$VUE_BRANCH" --single-branch --depth 1 .; then
+            echo "Could not clone the requested server branch '$VUE_BRANCH' of '$VUE_OWNER'. Does it exist?"
+            exit 1
+        fi
+
+        # Handle node version
+        handle_node_version
+
+        # Handle npm version
+        handle_npm_version
+
+        echo "Compiling Nextcloud vue..."
+        if ! npm ci --no-audit || ! npm run dev --if-present; then
+            echo "Could not compile Nextcloud vue"
+            exit 1
+        fi
+
+        touch "/var/www/nextcloud-vue-completed"
+    fi
+}
+
+link_nextcloud_vue() {
+    if [ -n "$NEXTCLOUDVUE_BRANCH" ]; then
+        if grep -q '@nextcloud/vue' package.json; then
+            if ! npm link @nextcloud/vue; then
+                echo "Could not link nextcloud vue in $1."
+                exit 1
+            fi
+        fi
+    fi
+}
+
 # Handle empty server branch variable
 if [ -z "$SERVER_BRANCH" ]; then
     export SERVER_BRANCH="nextcloud:master"
@@ -107,6 +147,10 @@ if ! [ -f /var/www/server-completed ]; then
         set -x
         installed_version="$(php -r 'require "/var/www/nextcloud/version.php"; echo implode(".", $OC_Version);')"
         if version_greater "$installed_version" "24.0.0.0"; then
+            # Install Nextcloud vue
+            install_nextcloud_vue
+            cd /var/www/nextcloud
+
             # Handle node version
             handle_node_version
 
@@ -114,7 +158,7 @@ if ! [ -f /var/www/server-completed ]; then
             handle_npm_version
 
             echo "Compiling server..."
-            if ! npm ci || ! npm run dev --if-present || ! npm run sass --if-present || ! npm run icon --if-present; then
+            if ! npm ci --no-audit || ! link_nextcloud_vue server || ! npm run dev --if-present || ! npm run sass --if-present || ! npm run icon --if-present; then
                 echo "Could not compile server."
                 exit 1
             fi
@@ -217,6 +261,10 @@ if [ -n "$BRANCH" ] && ! [ -f "/var/www/$APPID-completed" ]; then
         exit 1
     fi
 
+    # Install Nextcloud vue
+    install_nextcloud_vue
+    cd /var/www/nextcloud/apps/
+
     # Go into app directory
     cd ./"$APPID"
     
@@ -233,6 +281,7 @@ if [ -n "$BRANCH" ] && ! [ -f "/var/www/$APPID-completed" ]; then
     #         echo "Could not install composer dependencies of the mail app."
     #         exit 1
     #     fi
+
     # Install composer dependencies
     if [ -f composer.json ]; then
         if ! composer install --no-dev; then
@@ -243,7 +292,9 @@ if [ -n "$BRANCH" ] && ! [ -f "/var/www/$APPID-completed" ]; then
 
     # Compile apps
     if [ -f package.json ]; then
-        if ! npm ci --no-audit || ! npm run dev --if-present; then
+        # Link nextcloud vue
+        link_nextcloud_vue "$APPID"
+        if ! npm ci --no-audit || ! link_nextcloud_vue "$APPID" || ! npm run dev --if-present; then
             echo "Could not compile the $APPID app."
             exit 1
         fi
