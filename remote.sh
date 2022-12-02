@@ -278,6 +278,7 @@ install_enable_app "$FORMS_BRANCH" forms
 install_enable_app "$GROUPFOLDERS_BRANCH" groupfolders
 install_enable_app "$GUESTS_BRANCH" guests
 install_enable_app "$IMPERSONATE_BRANCH" impersonate
+install_enable_app "$INTEGRATIONGITHUB_BRANCH" integration_github
 install_enable_app "$ISSUTEMPLATE_BRANCH" issuetemplate
 install_enable_app "$LOGREADER_BRANCH" logreader
 install_enable_app "$MAIL_BRANCH" mail
