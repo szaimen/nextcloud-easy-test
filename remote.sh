@@ -372,6 +372,11 @@ if ! php -f occ maintenance:repair; then
     exit 1
 fi
 
+# Set Xdebug options
+if [ -n "$XDEBUG_MODE" ]; then
+    sed -i 's/^xdebug.mode\s*=\s*.*/xdebug.mode='"$XDEBUG_MODE"'/g' /usr/local/etc/php/conf.d/xdebug.ini
+fi
+
 # Show how to reach the server
 show_startup_info
 print_green "You can log in with the user 'admin' and its password 'nextcloud'"

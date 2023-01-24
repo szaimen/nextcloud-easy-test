@@ -172,5 +172,7 @@ If one of the above variables are set via e.g. `-e CALENDAR_BRANCH=master` durin
 
 `NEXTCLOUDVUE_BRANCH` if the variable is set it will compile javascript files for the chosen nextcloud vue branch and automatically link all chosen apps that use nextcloud vue and additionally the server if COMPILE_SERVER is set.
 
+`XDEBUG_MODE` if the variable is set it will change the Xdebug mode to the set value. For example debug, trace or profile can be used. If the variable is not set, Xdebug mode will be `off` by default.
+
 ## How does it work?
 The docker image comes pre-bundled with all needed dependencies for a minimal instance of Nextcloud and allows to define a target branch via environmental variables that will automatically be cloned and compiled during the container startup. For a refresh, you need to recreate the container by first removing it and then running the same command again.
