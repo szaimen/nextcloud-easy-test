@@ -154,7 +154,7 @@ ZIPPER_BRANCH
 -e SERVERINFO_BRANCH=master \
 -e TALK_BRANCH=master \
 -e TASKS_BRANCH=master \
--e TEXT_BRANCH=master \
+-e TEXT_BRANCH=main \
 -e VIEWER_BRANCH=master \
 -e ZIPPER_BRANCH=master \
 ```
