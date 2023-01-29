@@ -201,6 +201,18 @@ if ! [ -f /var/www/server-completed ]; then
             exit 1
         fi
     fi
+
+    # Set reverse proxy configs
+    [ -n "$OVERWRITE_CLI_URL" ] && php -f occ config:system:set overwrite.cli.url --value="$OVERWRITE_CLI_URL"
+    [ -n "$OVERWRITE_PROTOCOL" ] && php -f occ config:system:set overwriteprotocol --value="$OVERWRITE_PROTOCOL"
+    [ -n "$OVERWRITE_HOST" ] && php -f occ config:system:set overwritehost --value="$OVERWRITE_HOST"
+
+    # Configure pretty urls
+    if [ -n "$ENABLE_PRETTY_URLS" ]; then
+        php -f occ config:system:set htaccess.RewriteBase --value=/
+        php -f occ maintenance:update:htaccess
+    fi
+
     touch /var/www/server-completed
 fi
 
