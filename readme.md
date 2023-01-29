@@ -163,6 +163,8 @@ ZIPPER_BRANCH
 
 If one of the above variables are set via e.g. `-e CALENDAR_BRANCH=master` during the initial container creation, then will the container automatically get the chosen branch from github and compile and enable the chosen apps on the instance during the startup.
 
+Branches from custom forks can be installed as well. Use `-e CALENDAR_BRANCH=user:main` to install the `main` branch from the fork of `user`. If the fork has a different name (e.g. nextcloud-calendar), you can use the extended format `-e CALENDAR_BRANCH=user:main@nextcloud-calendar` to pull the branch `main` of the repo `user/nextcloud-calendar`. This format can be used with all app branch variables including `SERVER_BRANCH` and `NEXTCLOUDVUE_BRANCH`.
+
 ### Other variables
 `MANUAL_INSTALL` if the variable is set, it will skip all apps variables and only clone the given server branch and start Apache directly. You will then be able to provide your own credentials and install recommended apps.
 
