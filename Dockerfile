@@ -51,7 +51,13 @@ RUN a2dissite 000-default && \
 # Copy start script
 COPY cron.sh /cron.sh
 COPY start.sh /usr/bin/
+
+# Replace occ script with fixed version
+COPY occ /usr/local/bin/occ
+
+# Make scripts executable
 RUN chmod +x /usr/bin/start.sh; \
+    chmod +x /usr/local/bin/occ; \
     chmod +x /cron.sh
 
 # Correctly set rights and add directories

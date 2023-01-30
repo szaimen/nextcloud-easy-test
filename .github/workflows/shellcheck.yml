@@ -16,5 +16,6 @@ jobs:
       uses: ludeeus/action-shellcheck@master
       with:
         check_together: 'yes'
+        additional_files: 'occ'
       env:
         SHELLCHECK_OPTS: --shell bash
