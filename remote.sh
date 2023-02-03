@@ -8,10 +8,16 @@ print_green() {
 
 # Show how to reach the server
 show_startup_info() {
-    if [ -z "$TRUSTED_DOMAIN" ]; then
-        print_green "The server should now be reachable via https://localhost:8443/"
+    local SHOWN_PORT
+    if [ "$APACHE_PORT" = 443 ]; then
+        SHOWN_PORT=8443
     else
-        print_green "The server should now be reachable via https://$TRUSTED_DOMAIN:8443/"
+        SHOWN_PORT="$APACHE_PORT"
+    fi
+    if [ -z "$TRUSTED_DOMAIN" ]; then
+        print_green "The server should now be reachable via https://localhost:$SHOWN_PORT/"
+    else
+        print_green "The server should now be reachable via https://$TRUSTED_DOMAIN:$SHOWN_PORT/"
     fi
 }
 
