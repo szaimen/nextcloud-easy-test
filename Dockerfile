@@ -78,6 +78,8 @@ RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | ba
     && nvm install lts/fermium \
     && nvm install-latest-npm
 
+ENV APACHE_PORT 443
+
 # Set entrypoint
 ENTRYPOINT  ["start.sh"]
 
