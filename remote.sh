@@ -200,6 +200,8 @@ if ! [ -f /var/www/server-completed ]; then
         exit 1
     fi
 
+    php -f occ config:system:set log_type --value "errorlog"
+
     # Set trusted domain if needed 
     if [ -n "$TRUSTED_DOMAIN" ]; then
         if ! php -f occ config:system:set trusted_domains 1 --value="$TRUSTED_DOMAIN"; then
