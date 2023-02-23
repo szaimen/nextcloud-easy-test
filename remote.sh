@@ -372,6 +372,7 @@ install_enable_app "$TASKS_BRANCH" tasks
 install_enable_app "$TEXT_BRANCH" text
 install_enable_app "$VIEWER_BRANCH" viewer
 install_enable_app "$ZIPPER_BRANCH" files_zip
+install_enable_app "$TWOFACTORWEBAUTHN_BRANCH" twofactor_webauthn
 
 # Clear cache
 cd /var/www/nextcloud || exit
