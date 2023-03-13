@@ -7,7 +7,7 @@ This is a one-command Nextcloud instance that makes it possible to test differen
 Install Docker on your OS:
 - On Linux via:
     ```shell
-    curl -fsSL get.docker.com | sudo sh
+    curl -fsSL https://get.docker.com | sudo sh
     ```
 - On macOS and Windows via Docker Desktop:
 https://www.docker.com/products/docker-desktop 
