@@ -172,7 +172,7 @@ Branches from custom forks can be installed as well. Use `-e CALENDAR_BRANCH=use
 
 `SKELETON_ARCHIVE_URL` if the variable is set it will try to download a tar.gz file from a remote server, will untar it and will try to use that as a skeletondir which will make them the default files for new users ony the test instance.
 
-`COMPILE_SERVER` if the variable is set it will compile javascript files for the chosen server branch. This only works for branches starting from version 24.0.0.
+`COMPILE_SERVER` if the variable is set (so e.g. via `-e COMPILE_SERVER=1`) it will compile javascript files for the chosen server branch. This only works for branches starting from version 24.0.0.
 
 `APACHE_PORT` if the variable is set, it will instead of the default port 443 inside the container, use the chosen Port for APACHE.
 
