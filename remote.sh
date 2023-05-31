@@ -401,6 +401,14 @@ if [ -n "$XDEBUG_MODE" ]; then
     sed -i 's/^xdebug.mode\s*=\s*.*/xdebug.mode='"$XDEBUG_MODE"'/g' /usr/local/etc/php/conf.d/xdebug.ini
 fi
 
+# Set loglevel
+if [ -n "$NEXTCLOUD_LOGLEVEL" ]; then
+    php -f occ config:system:set loglevel --value "$NEXTCLOUD_LOGLEVEL" --type int
+    if [ "$NEXTCLOUD_LOGLEVEL" = 0 ]; then
+        php -f occ config:system:set debug --value true --type bool
+    fi
+fi
+
 # Show how to reach the server
 show_startup_info
 print_green "You can log in with the user 'admin' and its password 'nextcloud'"
