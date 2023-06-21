@@ -47,8 +47,12 @@ handle_node_version() {
         NODE_VERSION="$(echo "$NODE_LINE" | grep -oP '\^[0-9]+' | sed 's|\^||' | head -n 1)"
         if [ -n "$NODE_VERSION" ] && [ "$NODE_VERSION" -gt 14 ]; then
             if [ "$NODE_VERSION" -gt 16 ]; then
-                echo "The node version of $APPID is too new. Need to update the container."
-                exit 1
+                if [ "$NODE_VERSION" -gt 18 ]; then
+                    echo "The node version of $APPID is too new. Need to update the container."
+                    exit 1
+                fi
+                set +x
+                nvm use lts/hydrogen
             fi
             set +x
             nvm use lts/gallium
@@ -58,7 +62,7 @@ handle_node_version() {
         fi
     else
         set +x
-        nvm use lts/fermium
+        nvm use lts/gallium
     fi
 }
 
