@@ -73,9 +73,11 @@ USER www-data
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash \
     && export NVM_DIR="/var/www/.nvm" \
     && . "$NVM_DIR/nvm.sh" \
-    && nvm install lts/gallium \
+    && nvm install lts/hydrogen \
     && nvm install-latest-npm \
     && nvm install lts/fermium \
+    && nvm install-latest-npm \
+    && nvm install lts/gallium \
     && nvm install-latest-npm
 
 ENV APACHE_PORT 443
