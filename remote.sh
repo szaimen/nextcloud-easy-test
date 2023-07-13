@@ -54,9 +54,10 @@ handle_node_version() {
                 fi
                 set +x
                 nvm use lts/hydrogen
+            else
+                set +x
+                nvm use lts/gallium
             fi
-            set +x
-            nvm use lts/gallium
         else
             set +x
             nvm use lts/fermium
