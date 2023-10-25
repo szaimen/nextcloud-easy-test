@@ -357,6 +357,7 @@ fi
 
 # Compatible apps
 install_enable_app "$ACTIVITY_BRANCH" activity
+install_enable_app "$ADMINOVERVIEW_BRANCH" admin_overview
 install_enable_app "$APPROVAL_BRANCH" approval
 install_enable_app "$BOOKMARKS_BRANCH" bookmarks
 install_enable_app "$CALENDAR_BRANCH" calendar
@@ -391,10 +392,10 @@ install_enable_app "$SERVERINFO_BRANCH" serverinfo
 install_enable_app "$TALK_BRANCH" spreed
 install_enable_app "$TASKS_BRANCH" tasks
 install_enable_app "$TEXT_BRANCH" text
-install_enable_app "$VIEWER_BRANCH" viewer
-install_enable_app "$ZIPPER_BRANCH" files_zip
 install_enable_app "$TWOFACTORWEBAUTHN_BRANCH" twofactor_webauthn
 install_enable_app "$TWOFACTORTOTP_BRANCH" twofactor_totp
+install_enable_app "$VIEWER_BRANCH" viewer
+install_enable_app "$ZIPPER_BRANCH" files_zip
 
 # Clear cache
 cd /var/www/nextcloud || exit
