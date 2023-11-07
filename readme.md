@@ -82,7 +82,6 @@ If you want to run this in a VM, you need to change the port in the initial comm
 Additionally, the container currently reacts on the following apps variables and installs and compiles those automatically if provided:
 ```
 ACTIVITY_BRANCH
-ADMINOVERVIEW_BRANCH
 APPROVAL_BRANCH
 BOOKMARKS_BRANCH
 CALENDAR_BRANCH
@@ -127,7 +126,6 @@ ZIPPER_BRANCH
 
 ```
 -e ACTIVITY_BRANCH=master \
--e ADMINOVERVIEW_BRANCH=main \
 -e APPROVAL_BRANCH=main \
 -e BOOKMARKS_BRANCH=master \
 -e CALENDAR_BRANCH=main \
