@@ -387,6 +387,7 @@ install_enable_app "$PHOTOS_BRANCH" photos
 install_enable_app "$POLLS_BRANCH" polls
 install_enable_app "$PRIVACY_BRANCH" privacy
 install_enable_app "$RECOMMENDATIONS_BRANCH" recommendations
+install_enable_app "$RELATEDRESOURCES_BRANCH" related_resources
 install_enable_app "$RIGHTCLICK_BRANCH" files_rightclick
 install_enable_app "$SERVERINFO_BRANCH" serverinfo
 install_enable_app "$TALK_BRANCH" spreed
