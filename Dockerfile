@@ -69,15 +69,15 @@ RUN cd /var/www; \
 # Switch to www-data user to make container more secure
 USER www-data
 
-# Install NVM (Fermium = v14, Gallium = v16)
+# Install NVM (Gallium = v16, Hydrogen = v18, Iron = v20)
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash \
     && export NVM_DIR="/var/www/.nvm" \
     && . "$NVM_DIR/nvm.sh" \
-    && nvm install lts/hydrogen \
-    && nvm install-latest-npm \
-    && nvm install lts/fermium \
+    && nvm install lts/iron \
     && nvm install-latest-npm \
     && nvm install lts/gallium \
+    && nvm install-latest-npm \
+    && nvm install lts/hydrogen \
     && nvm install-latest-npm
 
 ENV APACHE_PORT 443
