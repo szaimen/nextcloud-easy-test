@@ -380,6 +380,7 @@ install_enable_app "$MAPS_BRANCH" maps
 install_enable_app "$NEWS_BRANCH" news
 install_enable_app "$NOTES_BRANCH" notes
 install_enable_app "$NOTIFICATIONS_BRANCH" notifications
+install_enable_app "$OCS_API_VIEWER_BRANCH" ocs_api_viewer
 install_enable_app "$PASSWORDPOLICY_BRANCH" password_policy
 install_enable_app "$PDFVIEWER_BRANCH" files_pdfviewer
 install_enable_app "$PHOTOS_BRANCH" photos
