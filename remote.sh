@@ -365,6 +365,7 @@ install_enable_app "$CONTACTS_BRANCH" contacts
 install_enable_app "$DECK_BRANCH" deck
 install_enable_app "$DOWNLOADLIMIT_BRANCH" files_downloadlimit
 install_enable_app "$E2EE_BRANCH" end_to_end_encryption
+install_enable_app "$FILES_LOCK_BRANCH" files_lock
 install_enable_app "$FIRSTRUNWIZARD_BRANCH" firstrunwizard
 # shellcheck disable=SC2153
 install_enable_app "$FORMS_BRANCH" forms
