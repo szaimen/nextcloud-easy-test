@@ -176,17 +176,12 @@ If one of the above variables are set via e.g. `-e CALENDAR_BRANCH=main` during 
 Branches from custom forks can be installed as well. Use `-e CALENDAR_BRANCH=user:main` to install the `main` branch from the fork of `user`. If the fork has a different name (e.g. nextcloud-calendar), you can use the extended format `-e CALENDAR_BRANCH=user:main@nextcloud-calendar` to pull the branch `main` of the repo `user/nextcloud-calendar`. This format can be used with all app branch variables including `SERVER_BRANCH` and `NEXTCLOUDVUE_BRANCH`.
 
 ### Other variables
-`MANUAL_INSTALL` if the variable is set, it will skip all apps variables and only clone the given server branch and start Apache directly. You will then be able to provide your own credentials and install recommended apps.
-
-`SKELETON_ARCHIVE_URL` if the variable is set it will try to download a tar.gz file from a remote server, will untar it and will try to use that as a skeletondir which will make them the default files for new users ony the test instance.
-
-`COMPILE_SERVER` if the variable is set (so e.g. via `-e COMPILE_SERVER=1`) it will compile javascript files for the chosen server branch. This only works for branches starting from version 24.0.0.
-
-`APACHE_PORT` if the variable is set, it will instead of the default port 443 inside the container, use the chosen Port for APACHE.
-
-`NEXTCLOUDVUE_BRANCH` if the variable is set it will compile javascript files for the chosen nextcloud vue branch and automatically link all chosen apps that use nextcloud vue and additionally the server if COMPILE_SERVER is set.
-
-`XDEBUG_MODE` if the variable is set it will change the Xdebug mode to the set value. For example `debug`, `trace` or `profile` can be used. If the variable is not set, Xdebug mode will be `off` by default.
+- `MANUAL_INSTALL` if the variable is set, it will skip all apps variables and only clone the given server branch and start Apache directly. You will then be able to provide your own credentials and install recommended apps.
+- `SKELETON_ARCHIVE_URL` if the variable is set it will try to download a tar.gz file from a remote server, will untar it and will try to use that as a skeletondir which will make them the default files for new users ony the test instance.
+- `COMPILE_SERVER` if the variable is set (so e.g. via `-e COMPILE_SERVER=1`) it will compile javascript files for the chosen server branch. This only works for branches starting from version 24.0.0.
+- `APACHE_PORT` if the variable is set, it will instead of the default port 443 inside the container, use the chosen Port for APACHE.
+- `NEXTCLOUDVUE_BRANCH` if the variable is set it will compile javascript files for the chosen nextcloud vue branch and automatically link all chosen apps that use nextcloud vue and additionally the server if COMPILE_SERVER is set.
+- `XDEBUG_MODE` if the variable is set it will change the Xdebug mode to the set value. For example `debug`, `trace` or `profile` can be used. If the variable is not set, Xdebug mode will be `off` by default.
 
 `NEXTCLOUD_LOGLEVEL` this can modify the loglevel of Nextcloud and must be an integer. By default it is set to 3. Valid values are: 0 = Debug, 1 = Info, 2 = Warning, 3 = Error, and 4 = Fatal.
 
