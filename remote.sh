@@ -111,19 +111,21 @@ install_nextcloud_vue() {
             exit 1
         fi
 
-        # Handle node version
-        handle_node_version
+        if [ -z "$FULL_INSTANCE_BRANCH" ]; then
+            # Handle node version
+            handle_node_version
 
-        # Handle npm version
-        handle_npm_version
+            # Handle npm version
+            handle_npm_version
 
-        echo "Compiling Nextcloud vue..."
-        if ! npm ci --no-audit || ! npm run dev --if-present; then
-            echo "Could not compile Nextcloud vue"
-            exit 1
+            echo "Compiling Nextcloud vue..."
+            if ! npm ci --no-audit || ! npm run dev --if-present; then
+                echo "Could not compile Nextcloud vue"
+                exit 1
+            fi
+
+            npm link
         fi
-
-        npm link
 
         touch "/var/www/nextcloud-vue-completed"
     fi
@@ -148,6 +150,27 @@ fi
 # Handle case that branch is present in nextcloud repo
 if ! echo "$SERVER_BRANCH" | grep -q ':'; then
     export SERVER_BRANCH="nextcloud:$SERVER_BRANCH"
+fi
+
+if [ -n "$FULL_INSTANCE_BRANCH" ]; then
+    export ACTIVITY_BRANCH="$FULL_INSTANCE_BRANCH"
+    export BRUTEFORCESETTINGS_BRANCH="$FULL_INSTANCE_BRANCH"
+    export CIRCLES_BRANCH="$FULL_INSTANCE_BRANCH"
+    export PDFVIEWER_BRANCH="$FULL_INSTANCE_BRANCH"
+    export FIRSTRUNWIZARD_BRANCH="$FULL_INSTANCE_BRANCH"
+    export LOGREADER_BRANCH="$FULL_INSTANCE_BRANCH"
+    export ANNOUNCEMENTS_BRANCH="$FULL_INSTANCE_BRANCH"
+    export NOTIFICATIONS_BRANCH="$FULL_INSTANCE_BRANCH"
+    export PASSWORDPOLICY_BRANCH="$FULL_INSTANCE_BRANCH"
+    export PHOTOS_BRANCH="$FULL_INSTANCE_BRANCH"
+    export PRIVACY_BRANCH="$FULL_INSTANCE_BRANCH"
+    export RECOMMENDATIONS_BRANCH="$FULL_INSTANCE_BRANCH"
+    export RELATEDRESOURCES_BRANCH="$FULL_INSTANCE_BRANCH"
+    export SERVERINFO_BRANCH="$FULL_INSTANCE_BRANCH"
+    export SURVEYCLIENT_BRANCH="$FULL_INSTANCE_BRANCH"
+    export TEXT_BRANCH="$FULL_INSTANCE_BRANCH"
+    export TWOFACTORTOTP_BRANCH="$FULL_INSTANCE_BRANCH"
+    export VIEWER_BRANCH="$FULL_INSTANCE_BRANCH"
 fi
 
 # Get NVM code
@@ -176,7 +199,7 @@ if ! [ -f /var/www/server-completed ]; then
     git submodule update --init
 
     # Allow to compile the server javascript
-    if [ -n "$COMPILE_SERVER" ]; then
+    if [ -z "$FULL_INSTANCE_BRANCH" ] && [ -n "$COMPILE_SERVER" ]; then
         set -x
         # shellcheck disable=SC2016
         installed_version="$(php -r 'require "/var/www/nextcloud/version.php"; echo implode(".", $OC_Version);')"
@@ -308,36 +331,38 @@ if [ -n "$BRANCH" ] && ! [ -f "/var/www/$APPID-completed" ]; then
 
     # Go into app directory
     cd ./"$APPID" || exit
-    
-    # Handle node version
-    handle_node_version
 
-    # Handel npm version
-    handle_npm_version
+    if [ -z "$FULL_INSTANCE_BRANCH" ]; then
+        # Handle node version
+        handle_node_version
 
-    # if [ "$APPID" = mail ]; then
-    #     wget https://getcomposer.org/download/1.10.22/composer.phar
-    #     chmod +x ./composer.phar
-    #     if ! ./composer.phar install --no-dev; then
-    #         echo "Could not install composer dependencies of the mail app."
-    #         exit 1
-    #     fi
+        # Handel npm version
+        handle_npm_version
 
-    # Install composer dependencies
-    if [ -f composer.json ]; then
-        if ! composer install --no-dev; then
-            echo "Could not install composer dependencies of the $APPID app."
-            exit 1
+        # if [ "$APPID" = mail ]; then
+        #     wget https://getcomposer.org/download/1.10.22/composer.phar
+        #     chmod +x ./composer.phar
+        #     if ! ./composer.phar install --no-dev; then
+        #         echo "Could not install composer dependencies of the mail app."
+        #         exit 1
+        #     fi
+
+        # Install composer dependencies
+        if [ -f composer.json ]; then
+            if ! composer install --no-dev; then
+                echo "Could not install composer dependencies of the $APPID app."
+                exit 1
+            fi
         fi
-    fi
 
-    # Compile apps
-    if [ -f package.json ]; then
-        # Link nextcloud vue
-        link_nextcloud_vue "$APPID"
-        if ! npm ci --no-audit || ! link_nextcloud_vue "$APPID" || ! npm run dev --if-present; then
-            echo "Could not compile the $APPID app."
-            exit 1
+        # Compile apps
+        if [ -f package.json ]; then
+            # Link nextcloud vue
+            link_nextcloud_vue "$APPID"
+            if ! npm ci --no-audit || ! link_nextcloud_vue "$APPID" || ! npm run dev --if-present; then
+                echo "Could not compile the $APPID app."
+                exit 1
+            fi
         fi
     fi
 
@@ -357,8 +382,10 @@ fi
 
 # Compatible apps
 install_enable_app "$ACTIVITY_BRANCH" activity
+install_enable_app "$ANNOUNCEMENTS_BRANCH" nextcloud_announcements
 install_enable_app "$APPROVAL_BRANCH" approval
 install_enable_app "$BOOKMARKS_BRANCH" bookmarks
+install_enable_app "$BRUTEFORCESETTINGS_BRANCH" bruteforcesettings
 install_enable_app "$CALENDAR_BRANCH" calendar
 install_enable_app "$CIRCLES_BRANCH" circles
 install_enable_app "$CONTACTS_BRANCH" contacts
@@ -391,6 +418,7 @@ install_enable_app "$RECOMMENDATIONS_BRANCH" recommendations
 install_enable_app "$RELATEDRESOURCES_BRANCH" related_resources
 install_enable_app "$RIGHTCLICK_BRANCH" files_rightclick
 install_enable_app "$SERVERINFO_BRANCH" serverinfo
+install_enable_app "$SURVEYCLIENT_BRANCH" survey_client
 install_enable_app "$TALK_BRANCH" spreed
 install_enable_app "$TASKS_BRANCH" tasks
 install_enable_app "$TEXT_BRANCH" text

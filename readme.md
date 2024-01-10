@@ -82,8 +82,10 @@ If you want to run this in a VM, you need to change the port in the initial comm
 Additionally, the container currently reacts on the following apps variables and installs and compiles those automatically if provided:
 ```
 ACTIVITY_BRANCH
+ANNOUNCEMENTS_BRANCH
 APPROVAL_BRANCH
 BOOKMARKS_BRANCH
+BRUTEFORCESETTINGS_BRANCH
 CALENDAR_BRANCH
 CIRCLES_BRANCH
 CONTACTS_BRANCH
@@ -114,6 +116,7 @@ RECOMMENDATIONS_BRANCH
 RELATEDRESOURCES_BRANCH
 RIGHTCLICK_BRANCH
 SERVERINFO_BRANCH
+SURVEYCLIENT_BRANCH
 TALK_BRANCH
 TASKS_BRANCH
 TEXT_BRANCH
@@ -128,8 +131,10 @@ ZIPPER_BRANCH
 
 ```
 -e ACTIVITY_BRANCH=master \
+-e ANNOUNCEMENTS_BRANCH=master \
 -e APPROVAL_BRANCH=main \
 -e BOOKMARKS_BRANCH=master \
+-e BRUTEFORCESETTINGS_BRANCH=master \
 -e CALENDAR_BRANCH=main \
 -e CIRCLES_BRANCH=master \
 -e CONTACTS_BRANCH=main \
@@ -160,6 +165,7 @@ ZIPPER_BRANCH
 -e RELATEDRESOURCES_BRANCH=master \
 -e RIGHTCLICK_BRANCH=master \
 -e SERVERINFO_BRANCH=master \
+-e SURVEYCLIENT_BRANCH=master \
 -e TALK_BRANCH=main \
 -e TASKS_BRANCH=master \
 -e TEXT_BRANCH=main \
@@ -179,6 +185,7 @@ Branches from custom forks can be installed as well. Use `-e CALENDAR_BRANCH=use
 - `MANUAL_INSTALL` if the variable is set, it will skip all apps variables and only clone the given server branch and start Apache directly. You will then be able to provide your own credentials and install recommended apps.
 - `SKELETON_ARCHIVE_URL` if the variable is set it will try to download a tar.gz file from a remote server, will untar it and will try to use that as a skeletondir which will make them the default files for new users ony the test instance.
 - `COMPILE_SERVER` if the variable is set (so e.g. via `-e COMPILE_SERVER=1`) it will compile javascript files for the chosen server branch. This only works for branches starting from version 24.0.0.
+- `FULL_INSTANCE_BRANCH` if the variable is set it will download and compile all apps that are bundled by default with a default Nextcloud instance. Set it for example to `stable28`. (**Please note**: Only stable branches are supported and not master or main. Also the support app and the suspicious_login app are never included. Additionally, any compiling will be skipped if this variable is set).
 - `APACHE_PORT` if the variable is set, it will instead of the default port 443 inside the container, use the chosen Port for APACHE.
 - `NEXTCLOUDVUE_BRANCH` if the variable is set it will compile javascript files for the chosen nextcloud vue branch and automatically link all chosen apps that use nextcloud vue and additionally the server if COMPILE_SERVER is set.
 - `XDEBUG_MODE` if the variable is set it will change the Xdebug mode to the set value. For example `debug`, `trace` or `profile` can be used. If the variable is not set, Xdebug mode will be `off` by default.
