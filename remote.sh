@@ -333,13 +333,6 @@ if [ -n "$BRANCH" ] && ! [ -f "/var/www/$APPID-completed" ]; then
     # Go into app directory
     cd ./"$APPID" || exit
 
-    if [ -z "$FULL_INSTANCE_BRANCH" ]; then
-        # Handle node version
-        handle_node_version
-
-        # Handel npm version
-        handle_npm_version
-
         # if [ "$APPID" = mail ]; then
         #     wget https://getcomposer.org/download/1.10.22/composer.phar
         #     chmod +x ./composer.phar
@@ -355,6 +348,13 @@ if [ -n "$BRANCH" ] && ! [ -f "/var/www/$APPID-completed" ]; then
                 exit 1
             fi
         fi
+
+    if [ -z "$FULL_INSTANCE_BRANCH" ]; then
+        # Handle node version
+        handle_node_version
+
+        # Handel npm version
+        handle_npm_version
 
         # Compile apps
         if [ -f package.json ]; then
