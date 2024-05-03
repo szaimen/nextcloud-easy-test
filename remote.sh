@@ -420,6 +420,7 @@ install_enable_app "$RELATEDRESOURCES_BRANCH" related_resources
 install_enable_app "$RIGHTCLICK_BRANCH" files_rightclick
 install_enable_app "$SERVERINFO_BRANCH" serverinfo
 install_enable_app "$SURVEYCLIENT_BRANCH" survey_client
+install_enable_app "$SUSPICIOUSLOGIN_BRANCH" suspicious_login
 install_enable_app "$TALK_BRANCH" spreed
 install_enable_app "$TASKS_BRANCH" tasks
 install_enable_app "$TEXT_BRANCH" text
