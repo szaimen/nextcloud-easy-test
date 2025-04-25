@@ -1,4 +1,4 @@
-# Nextcloud easy test instance
+# Nextcloud-easy-test
 This is a one-command Nextcloud instance that makes it possible to test different branches and apps with just one command.
 
 ## How to use this?
