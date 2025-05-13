@@ -191,8 +191,8 @@ Branches from custom forks can be installed as well. Use `-e CALENDAR_BRANCH=use
 - `APACHE_PORT` if the variable is set, it will instead of the default port 443 inside the container, use the chosen Port for APACHE.
 - `NEXTCLOUDVUE_BRANCH` if the variable is set it will compile javascript files for the chosen nextcloud vue branch and automatically link all chosen apps that use nextcloud vue and additionally the server if COMPILE_SERVER is set.
 - `XDEBUG_MODE` if the variable is set it will change the Xdebug mode to the set value. For example `debug`, `trace` or `profile` can be used. If the variable is not set, Xdebug mode will be `off` by default.
-
-`NEXTCLOUD_LOGLEVEL` this can modify the loglevel of Nextcloud and must be an integer. By default it is set to 3. Valid values are: 0 = Debug, 1 = Info, 2 = Warning, 3 = Error, and 4 = Fatal.
+- `CUSTOM_LOCALAPP` if the variable is set it will allow another directory to be used for apps; when used with a bind volume and the appropriate permissions, custom local apps could be used, or tested. If set to true, the default directory, and URL is `localapps`; otherwise a custom directory/URL can be created by adding an arbitary string as the variable (`e.g. -e CUSTOM_LOCALAPP=myapps`).
+- `NEXTCLOUD_LOGLEVEL` this can modify the loglevel of Nextcloud and must be an integer. By default it is set to 3. Valid values are: 0 = Debug, 1 = Info, 2 = Warning, 3 = Error, and 4 = Fatal.
 
 ## How does it work?
 The docker image comes pre-bundled with all needed dependencies for a minimal instance of Nextcloud and allows to define a target branch via environmental variables that will automatically be cloned and compiled during the container startup. For a refresh, you need to recreate the container by first removing it and then running the same command again.

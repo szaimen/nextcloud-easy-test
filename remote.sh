@@ -142,6 +142,30 @@ link_nextcloud_vue() {
     fi
 }
 
+# Function to handle custom local apps
+# (Indentation used in this function is intentional)
+handle_custom_local_apps() {
+    sed -i "/);/i\
+  'apps_paths' => [
+    [
+    'path' => OC::$SERVERROOT . \"/apps\",
+    'url' => \"/apps\",
+    'writable' => false,
+    ],
+    [ 
+    'path' => OC::$SERVERROOT . \"/localapps\",
+    'url' => \"/localapps\",
+    'writable' => true,
+    ],
+  ],
+    " /var/www/nextcloud/config/config.php
+    if [[ "$CUSTOM_LOCALAPP" != "true" && "$CUSTOM_LOCALAPP" != "1" ]]; then
+        sed -i "s|/localapp|/$CUSTOM_LOCALAPP|g" filename.txt
+    fi
+    # Potentional cleanup
+    sed -i "s|//|/|g" filename.txt
+}
+
 # Handle empty server branch variable
 if [ -z "$SERVER_BRANCH" ]; then
     export SERVER_BRANCH="nextcloud:master"
@@ -428,6 +452,11 @@ install_enable_app "$TWOFACTORWEBAUTHN_BRANCH" twofactor_webauthn
 install_enable_app "$TWOFACTORTOTP_BRANCH" twofactor_totp
 install_enable_app "$VIEWER_BRANCH" viewer
 install_enable_app "$ZIPPER_BRANCH" files_zip
+
+# Handle custom local apps
+if [ -n "$CUSTOM_LOCALAPP" ]; then
+    handle_custom_local_apps
+fi
 
 # Clear cache
 cd /var/www/nextcloud || exit
