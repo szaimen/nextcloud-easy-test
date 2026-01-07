@@ -45,26 +45,26 @@ handle_node_version() {
     if [ -n "$NODE_LINE" ] && echo "$NODE_LINE" | grep -q '\^'; then
         local NODE_VERSION
         NODE_VERSION="$(echo "$NODE_LINE" | grep -oP '\^[0-9]+' | sed 's|\^||' | head -n 1)"
-        if [ -n "$NODE_VERSION" ] && [ "$NODE_VERSION" -gt 18 ]; then
-            if [ "$NODE_VERSION" -gt 20 ]; then
-                # TODO: NODE_VERSION test should check for 20 and not 22 but checking for 22 temporarily so that script is able to proceed
-                if [ "$NODE_VERSION" -gt 22 ]; then
+        if [ -n "$NODE_VERSION" ] && [ "$NODE_VERSION" -gt 20 ]; then
+            if [ "$NODE_VERSION" -gt 22 ]; then
+                # TODO: NODE_VERSION test should check for 22 and not 24 but checking for 22 temporarily so that script is able to proceed
+                if [ "$NODE_VERSION" -gt 24 ]; then
                     echo "The node version of $APPID is too new. Need to update the container."
                     exit 1
                 fi
                 set +x
-                nvm use lts/jod
+                nvm use lts/krypton
             else
                 set +x
-                nvm use lts/iron
+                nvm use lts/jod
             fi
         else
             set +x
-            nvm use lts/hydrogen
+            nvm use lts/iron
         fi
     else
         set +x
-        nvm use lts/hydrogen
+        nvm use lts/iron
     fi
 }
 
