@@ -21,7 +21,7 @@ On Linux and macOS:
 docker run -it \
 --env SERVER_BRANCH=master \
 --name nextcloud-easy-test \
--p 127.0.0.1:8443:443 \
+--publish 127.0.0.1:8443:443 \
 --volume="nextcloud_easy_test_npm_cache_volume:/var/www/.npm" \
 ghcr.io/szaimen/nextcloud-easy-test:latest
 ```
@@ -33,7 +33,7 @@ ghcr.io/szaimen/nextcloud-easy-test:latest
 docker run -it ^
 --env SERVER_BRANCH=master ^
 --name nextcloud-easy-test ^
--p 127.0.0.1:8443:443 ^
+--publish 127.0.0.1:8443:443 ^
 --volume="nextcloud_easy_test_npm_cache_volume:/var/www/.npm" ^
 ghcr.io/szaimen/nextcloud-easy-test:latest
 ```
@@ -52,7 +52,7 @@ This inserts the environment variable `SERVER_BRANCH` into the container and set
 `--name nextcloud-easy-test`  
 This gives the container a distinct name `nextcloud-easy-test` so that you are able to easily run other docker commands on the container.
 
-`-p 127.0.0.1:8443:443`  
+`--publish 127.0.0.1:8443:443`  
 This makes the container listen on `localhost` and maps the host port `8443` to the container port `443` so that you are able to access the container by opening https://localhost:8443.
 
 `--volume="nextcloud_easy_test_npm_cache_volume:/var/www/.npm"`
@@ -76,7 +76,7 @@ docker rm nextcloud-easy-test
 ```
 
 ### Running in a VM
-If you want to run this in a VM, you need to change the port in the initial command from `-p 127.0.0.1:8443:443` to `-p 8443:443` and add the following flag: `--env TRUSTED_DOMAIN=ip.of.the.VM` in order to automatically make it work.
+If you want to run this in a VM, you need to change the port in the initial command from `--publish 127.0.0.1:8443:443` to `--publish 8443:443` and add the following flag: `--env TRUSTED_DOMAIN=ip.of.the.VM` in order to automatically make it work.
 
 ### Available APPS
 Additionally, the container currently reacts on the following apps variables and installs and compiles those automatically if provided:
