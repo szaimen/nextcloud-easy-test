@@ -19,7 +19,7 @@ Run the container:
 On Linux and macOS:
 ```
 docker run -it \
--e SERVER_BRANCH=master \
+--env SERVER_BRANCH=master \
 --name nextcloud-easy-test \
 -p 127.0.0.1:8443:443 \
 --volume="nextcloud_easy_test_npm_cache_volume:/var/www/.npm" \
@@ -31,7 +31,7 @@ ghcr.io/szaimen/nextcloud-easy-test:latest
 
 ```
 docker run -it ^
--e SERVER_BRANCH=master ^
+--env SERVER_BRANCH=master ^
 --name nextcloud-easy-test ^
 -p 127.0.0.1:8443:443 ^
 --volume="nextcloud_easy_test_npm_cache_volume:/var/www/.npm" ^
@@ -46,7 +46,7 @@ ghcr.io/szaimen/nextcloud-easy-test:latest
 `docker run -it`  
 This command creates a new docker container.
 
-`-e SERVER_BRANCH=master`  
+`--env SERVER_BRANCH=master`  
 This inserts the environment variable `SERVER_BRANCH` into the container and sets it to the value `master`. 
 
 `--name nextcloud-easy-test`  
@@ -76,7 +76,7 @@ docker rm nextcloud-easy-test
 ```
 
 ### Running in a VM
-If you want to run this in a VM, you need to change the port in the initial command from `-p 127.0.0.1:8443:443` to `-p 8443:443` and add the following flag: `-e TRUSTED_DOMAIN=ip.of.the.VM` in order to automatically make it work.
+If you want to run this in a VM, you need to change the port in the initial command from `-p 127.0.0.1:8443:443` to `-p 8443:443` and add the following flag: `--env TRUSTED_DOMAIN=ip.of.the.VM` in order to automatically make it work.
 
 ### Available APPS
 Additionally, the container currently reacts on the following apps variables and installs and compiles those automatically if provided:
@@ -132,63 +132,63 @@ ZIPPER_BRANCH
 <summary>For easy copy and paste</summary>
 
 ```
--e ACTIVITY_BRANCH=master \
--e ANNOUNCEMENTS_BRANCH=master \
--e APPROVAL_BRANCH=main \
--e BOOKMARKS_BRANCH=master \
--e BRUTEFORCESETTINGS_BRANCH=master \
--e CALENDAR_BRANCH=main \
--e CIRCLES_BRANCH=master \
--e CONTACTS_BRANCH=main \
--e DECK_BRANCH=main \
--e DOWNLOADLIMIT_BRANCH=master \
--e E2EE_BRANCH=master \
--e FILES_LOCK_BRANCH=main \
--e FIRSTRUNWIZARD_BRANCH=master \
--e FORMS_BRANCH=main \
--e GROUPFOLDERS_BRANCH=master \
--e GUESTS_BRANCH=master \
--e IMPERSONATE_BRANCH=master \
--e INTEGRATIONGITHUB_BRANCH=main \
--e ISSUTEMPLATE_BRANCH=master \
--e LOGREADER_BRANCH=master \
--e MAIL_BRANCH=main \
--e MAPS_BRANCH=master \
--e NEWS_BRANCH=master \
--e NOTES_BRANCH=main \
--e NOTIFICATIONS_BRANCH=master \
--e OCS_API_VIEWER_BRANCH=main \
--e PASSWORDPOLICY_BRANCH=master \
--e PDFVIEWER_BRANCH=master \
--e PHOTOS_BRANCH=master \
--e POLLS_BRANCH=master \
--e PRIVACY_BRANCH=master \
--e RECOMMENDATIONS_BRANCH=master \
--e RELATEDRESOURCES_BRANCH=master \
--e RIGHTCLICK_BRANCH=master \
--e SERVERINFO_BRANCH=master \
--e SURVEYCLIENT_BRANCH=master \
--e SUSPICIOUSLOGIN_BRANCH=master \
--e TABLES_BRANCH=main \
--e TALK_BRANCH=main \
--e TASKS_BRANCH=master \
--e TEXT_BRANCH=main \
--e TWOFACTORWEBAUTHN_BRANCH=main \
--e TWOFACTORTOTP_BRANCH=master \
--e VIEWER_BRANCH=master \
--e ZIPPER_BRANCH=main \
+--env ACTIVITY_BRANCH=master \
+--env ANNOUNCEMENTS_BRANCH=master \
+--env APPROVAL_BRANCH=main \
+--env BOOKMARKS_BRANCH=master \
+--env BRUTEFORCESETTINGS_BRANCH=master \
+--env CALENDAR_BRANCH=main \
+--env CIRCLES_BRANCH=master \
+--env CONTACTS_BRANCH=main \
+--env DECK_BRANCH=main \
+--env DOWNLOADLIMIT_BRANCH=master \
+--env E2EE_BRANCH=master \
+--env FILES_LOCK_BRANCH=main \
+--env FIRSTRUNWIZARD_BRANCH=master \
+--env FORMS_BRANCH=main \
+--env GROUPFOLDERS_BRANCH=master \
+--env GUESTS_BRANCH=master \
+--env IMPERSONATE_BRANCH=master \
+--env INTEGRATIONGITHUB_BRANCH=main \
+--env ISSUTEMPLATE_BRANCH=master \
+--env LOGREADER_BRANCH=master \
+--env MAIL_BRANCH=main \
+--env MAPS_BRANCH=master \
+--env NEWS_BRANCH=master \
+--env NOTES_BRANCH=main \
+--env NOTIFICATIONS_BRANCH=master \
+--env OCS_API_VIEWER_BRANCH=main \
+--env PASSWORDPOLICY_BRANCH=master \
+--env PDFVIEWER_BRANCH=master \
+--env PHOTOS_BRANCH=master \
+--env POLLS_BRANCH=master \
+--env PRIVACY_BRANCH=master \
+--env RECOMMENDATIONS_BRANCH=master \
+--env RELATEDRESOURCES_BRANCH=master \
+--env RIGHTCLICK_BRANCH=master \
+--env SERVERINFO_BRANCH=master \
+--env SURVEYCLIENT_BRANCH=master \
+--env SUSPICIOUSLOGIN_BRANCH=master \
+--env TABLES_BRANCH=main \
+--env TALK_BRANCH=main \
+--env TASKS_BRANCH=master \
+--env TEXT_BRANCH=main \
+--env TWOFACTORWEBAUTHN_BRANCH=main \
+--env TWOFACTORTOTP_BRANCH=master \
+--env VIEWER_BRANCH=master \
+--env ZIPPER_BRANCH=main \
 ```
 
 </details>
 
-If one of the above variables are set via e.g. `-e CALENDAR_BRANCH=main` during the initial container creation, then will the container automatically get the chosen branch from github and compile and enable the chosen apps on the instance during the startup.
+If one of the above variables are set via e.g. `--env CALENDAR_BRANCH=main` during the initial container creation, then will the container automatically get the chosen branch from github and compile and enable the chosen apps on the instance during the startup.
 
-Branches from custom forks can be installed as well. Use `-e CALENDAR_BRANCH=user:main` to install the `main` branch from the fork of `user`. If the fork has a different name (e.g. nextcloud-calendar), you can use the extended format `-e CALENDAR_BRANCH=user:main@nextcloud-calendar` to pull the branch `main` of the repo `user/nextcloud-calendar`. This format can be used with all app branch variables including `SERVER_BRANCH` and `NEXTCLOUDVUE_BRANCH`.
+Branches from custom forks can be installed as well. Use `--env CALENDAR_BRANCH=user:main` to install the `main` branch from the fork of `user`. If the fork has a different name (e.g. nextcloud-calendar), you can use the extended format `--env CALENDAR_BRANCH=user:main@nextcloud-calendar` to pull the branch `main` of the repo `user/nextcloud-calendar`. This format can be used with all app branch variables including `SERVER_BRANCH` and `NEXTCLOUDVUE_BRANCH`.
 
 ### Other variables
 - `MANUAL_INSTALL` if the variable is set, it will skip all apps variables and only clone the given server branch and start Apache directly. You will then be able to provide your own credentials and install recommended apps.
 - `SKELETON_ARCHIVE_URL` if the variable is set it will try to download a tar.gz file from a remote server, will untar it and will try to use that as a skeletondir which will make them the default files for new users ony the test instance.
-- `COMPILE_SERVER` if the variable is set (so e.g. via `-e COMPILE_SERVER=1`) it will compile javascript files for the chosen server branch. This only works for branches starting from version 24.0.0.
+- `COMPILE_SERVER` if the variable is set (so e.g. via `--env COMPILE_SERVER=1`) it will compile javascript files for the chosen server branch. This only works for branches starting from version 24.0.0.
 - `FULL_INSTANCE_BRANCH` if the variable is set it will download and install all apps that are bundled by default with a default Nextcloud instance. Set it for example to `stable28`. (**Please note**: Only stable branches are supported and not master or main. Also the support app and the suspicious_login app are never included. Additionally, any js compiling will be skipped if this variable is set).
 - `APACHE_PORT` if the variable is set, it will instead of the default port 443 inside the container, use the chosen Port for APACHE.
 - `NEXTCLOUDVUE_BRANCH` if the variable is set it will compile javascript files for the chosen nextcloud vue branch and automatically link all chosen apps that use nextcloud vue and additionally the server if COMPILE_SERVER is set.
