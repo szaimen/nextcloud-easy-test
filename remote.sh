@@ -240,7 +240,11 @@ if ! [ -f /var/www/server-completed ]; then
         exit 1
     fi
 
+    # Set log to log to stderr
     php -f occ config:system:set log_type --value "errorlog"
+
+    # Import the cert into Nextclouds cert store
+    php -f occ security:certificates:import /certs/ssl.crt
 
     # Set trusted domain if needed 
     if [ -n "$TRUSTED_DOMAIN" ]; then
