@@ -246,6 +246,9 @@ if ! [ -f /var/www/server-completed ]; then
     # Import the cert into Nextclouds cert store
     php -f occ security:certificates:import /certs/ssl.crt
 
+    # Allow local remote servers
+    php -f occ config:system:set allow_local_remote_servers --type=bool --value=true
+
     # Set trusted domain if needed 
     if [ -n "$TRUSTED_DOMAIN" ]; then
         if ! php -f occ config:system:set trusted_domains 1 --value="$TRUSTED_DOMAIN"; then
