@@ -19,7 +19,7 @@ RUN curl -sS https://getcomposer.org/installer | php && \
 # Generate self signed certificate
 RUN mkdir -p /certs && \
     cd /certs && \
-    openssl req -new -newkey rsa:4096 -days 3650 -nodes -x509 -subj "/C=DE/ST=BE/L=Local/O=Dev/CN=localhost" -keyout ./ssl.key -out ./ssl.crt && \
+    openssl req -new -newkey rsa:4096 -days 3650 -nodes -x509 -subj "/C=DE/ST=BE/L=Local/O=Dev/CN=nextcloud.local" -keyout ./ssl.key -out ./ssl.crt && \
     chmod -R +r ./
 
 # Remove default ports
