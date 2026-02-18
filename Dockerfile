@@ -5,6 +5,7 @@ FROM ghcr.io/juliusknorr/nextcloud-dev-php82
 RUN apt-get update; \
     apt-get install -y --no-install-recommends \
         openssl \
+        ca-certificates \
         nano \
         openssh-client \
         unzip \
@@ -16,11 +17,25 @@ RUN curl -sS https://getcomposer.org/installer | php && \
     mv composer.phar /usr/local/bin/composer && \
     chmod +x /usr/local/bin/composer
 
-# Generate self signed certificate
-RUN mkdir -p /certs && \
-    cd /certs && \
-    openssl req -new -newkey rsa:4096 -days 3650 -nodes -x509 -subj "/C=DE/ST=BE/L=Local/O=Dev/CN=nextcloud.local" -keyout ./ssl.key -out ./ssl.crt && \
-    chmod -R +r ./
+# Copy server CNF (contains SAN for nextcloud.local)
+COPY server.cnf /server.cnf
+
+# Generate a certificate signed by a local CA and add CA to system trust
+RUN set -eux; \
+    mkdir -p /certs; \
+    cd /certs; \
+# Create a local CA
+    openssl genrsa -out ca.key 4096; \
+    openssl req -x509 -new -nodes -key ca.key -sha256 -days 3650 -subj "/C=DE/ST=BE/L=Local/O=Dev CA/CN=nextcloud-dev-ca" -out ca.crt; \
+# Create server key and CSR with SAN for nextcloud.local
+    openssl genrsa -out ssl.key 4096; \
+    openssl req -new -key ssl.key -out server.csr -config /server.cnf; \
+# Sign server CSR with the CA, including SAN extension
+    openssl x509 -req -in server.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out ssl.crt -days 3650 -sha256 -extfile /server.cnf -extensions req_ext; \
+# Install CA into the system trust store so host trusts the cert
+    cp ca.crt /usr/local/share/ca-certificates/nextcloud-dev-ca.crt; \
+    update-ca-certificates; \
+    chmod -R +r /certs
 
 # Remove default ports
 RUN rm /etc/apache2/ports.conf; \
@@ -87,4 +102,3 @@ ENTRYPOINT  ["start.sh"]
 
 # Set CMD
 CMD ["apache2-foreground"]
-
