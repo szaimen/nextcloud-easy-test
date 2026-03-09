@@ -249,6 +249,9 @@ if ! [ -f /var/www/server-completed ]; then
     # Allow local remote servers
     php -f occ config:system:set allow_local_remote_servers --type=bool --value=true
 
+    # Allow self signed certs for federated sharing
+    php -f occ config:system:set sharing.federation.allowSelfSignedCertificates --type=bool --value=true
+
     # Set trusted domain if needed 
     if [ -n "$TRUSTED_DOMAIN" ]; then
         if ! php -f occ config:system:set trusted_domains 1 --value="$TRUSTED_DOMAIN"; then
