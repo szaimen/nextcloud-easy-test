@@ -252,6 +252,10 @@ if ! [ -f /var/www/server-completed ]; then
     # Allow self signed certs for federated sharing
     php -f occ config:system:set sharing.federation.allowSelfSignedCertificates --type=bool --value=true
 
+    # Disable bruteforce and ratelimit protection
+    php -f occ config:system:set auth.bruteforce.protection.enabled --type=bool --value=false
+    php -f occ config:system:set ratelimit.protection.enabled --type=bool --value=false
+
     # Set trusted domain if needed 
     if [ -n "$TRUSTED_DOMAIN" ]; then
         if ! php -f occ config:system:set trusted_domains 1 --value="$TRUSTED_DOMAIN"; then
