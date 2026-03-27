@@ -374,6 +374,14 @@ if [ -n "$BRANCH" ] && ! [ -f "/var/www/$APPID-completed" ]; then
         if [ -f package.json ]; then
             # Link nextcloud vue
             link_nextcloud_vue "$APPID"
+
+            # Make exception for pdfviewer which seems to have outdated package-lock.json.
+            # TODO: revert this later
+            if [ "$APPID" = "files_pdfviewer" ]; then
+                npm install
+            fi
+
+            # Compile the app
             if ! npm ci --no-audit || ! link_nextcloud_vue "$APPID" || ! npm run dev --if-present; then
                 echo "Could not compile the $APPID app."
                 exit 1
