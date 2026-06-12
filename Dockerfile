@@ -1,5 +1,5 @@
-# From https://github.com/juliusknorr/nextcloud-docker-dev/blob/master/docker/php82/Dockerfile
-FROM ghcr.io/juliusknorr/nextcloud-dev-php82
+# From https://github.com/juliusknorr/nextcloud-docker-dev/blob/master/docker/php83/Dockerfile
+FROM ghcr.io/juliusknorr/nextcloud-dev-php83
 
 # Get other dependencies
 RUN apt-get update; \
