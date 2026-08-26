@@ -200,7 +200,7 @@ if ! [ -f /var/www/server-completed ]; then
     git submodule update --init
 
     # Allow to compile the server javascript
-    if [ -z "$FULL_INSTANCE_BRANCH" ] && [ -n "$COMPILE_SERVER" ]; then
+    if [ -z "$FULL_INSTANCE_BRANCH" ] && [ "$COMPILE_SERVER" != "0" ]; then
         set -x
         # shellcheck disable=SC2016
         installed_version="$(php -r 'require "/var/www/nextcloud/version.php"; echo implode(".", $OC_Version);')"
