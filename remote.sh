@@ -69,20 +69,18 @@ handle_node_version() {
 }
 
 # Handle npm versions
+# Needs to be run after handle_node_version since it uses node to read the package.json
 handle_npm_version() {
     set -x
+    local NPM_RANGE
     if [ -f package.json ]; then
-        local NPM_LINE
-        NPM_LINE=$(grep '"npm":' package.json | head -1)
+        NPM_RANGE="$(node -p 'try{require("./package.json").engines.npm||""}catch(e){""}')"
     fi
-    if [ -n "$NPM_LINE" ] && echo "$NPM_LINE" | grep -q '\^'; then
-        local NPM_VERSION
-        NPM_VERSION="$(echo "$NPM_LINE" | grep -oP '\^[0-9]+' | sed 's|\^||' | head -n 1)"
-        if [ -n "$NPM_VERSION" ] && [ "$NPM_VERSION" -eq 7 ]; then
-            set +x
-            npm i -g npm@latest-7
-            return
-        fi
+    if [ -n "$NPM_RANGE" ]; then
+        set +x
+        # Install the highest npm version that satisfies the range that the app requires
+        npm i -g npm@"$NPM_RANGE"
+        return
     fi
 
     set +x
